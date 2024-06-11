@@ -1,35 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head th:replace="Fragments/head :: head(Login)">
   <meta charset="UTF-8">
   <title>Title</title>
 </head>
 <body>
-<form th:action="'/register'" th:object="${registerUser}" method="post">
-  <table>
-    <tr>
-      <td>email: </td>
-      <td><input th:field="*{email}" type="text"> </td>
-    </tr>
-    <tr>
-      <td>FirstName: </td>
-      <td><input th:field="*{firstName}" type="text"> </td>
-    </tr>
-    <tr>
-      <td>LastName: </td>
-      <td><input th:field="*{lastName}" type="text"> </td>
-    </tr>
-    <tr>
-      <td>Password: </td>
-      <td><input th:field="*{password}" type="text"> </td>
-    </tr>
-    <tr>
-      <td>Confirm Password: </td>
-      <td><input th:field="*{confirmPassword}" type="text"> </td>
-    </tr>
-    <tr>
-  </table>
-  <input type="submit" value="Register">
-</form>
+<div class="container" id="container">
+  <div th:replace="/Fragments/login-slider.html :: login-slider">
+  </div>
+  <div class="form-container sign-up" id="register-form">
+    <form th:action="@{/register}" method="post">
+      <h1>Create Account</h1>
+      <div class="social-icons">
+        <a class="icon" href="#"><i class="fa-brands fa-google-plus-g"></i></a>
+        <a class="icon" href="#"><i class="fa-brands fa-facebook-f"></i></a>
+      </div>
+      <div class="form-item">
+        <div class="left-item"></div>
+        <hr class="separator"/>
+        <span>or use your email for registration</span>
+        <hr class="separator"/>
+        <div class="right-item"></div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <input placeholder="First Name" type="text"/>
+        </div>
+        <div class="col-6">
+          <input placeholder="Last Name" type="text"/>
+        </div>
+      </div>
+      <input placeholder="Email" type="email"/>
+      <div class="show-item">
+        <input id="register-password" oninput="checkPasswordStrength()" placeholder="Password" type="password"/>
+        <div id="password-strength"></div>
+      </div>
+      <!-- Confirm password input -->
+      <div class="show-item">
+        <input id="confirm-password" placeholder="Confirm Password" type="password"/>
+        <div id="password-match"></div>
+      </div>
+      <button id="sign-up-btn" onclick="showOtpForm()" type="button">
+        Sign Up
+      </button>
+      <p>Already have an account?<a onclick="location.href='/login'">
+        <span class="font-weight-bold" style="font-weight: bold; color: #75b8ed">Login</span></a>
+      </p>
+    </form>
+  </div>
+</div>
+<script th:src="@{/js/script.js}"></script>
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/swiper-bundle.min.js}"></script>
 </body>
 </html>

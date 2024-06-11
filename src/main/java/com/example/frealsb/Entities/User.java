@@ -1,10 +1,8 @@
 package com.example.frealsb.Entities;
-import com.example.frealsb.Enums.EnumRole;
 import com.example.frealsb.Interface.JpaEntities;
 import jakarta.persistence.*;
 import jakarta.persistence.GenerationType;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -84,10 +82,10 @@ public class User extends JpaEntities {
     private Role role;
 
 //  Function
-    public boolean hasRole(EnumRole enumRole) {
+    public boolean hasRole(String roleName) {
         if (this.role == null) {
             return false;
         }
-        return this.role.getRoleName() == enumRole;
+        return this.role.getRole_name() == roleName;
     }
 }

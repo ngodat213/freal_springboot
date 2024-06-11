@@ -29,14 +29,14 @@ public class CustomUserDetailService implements UserDetailsService {
             throw new UsernameNotFoundException(email);
         }
         List<GrantedAuthority> listAuth = new ArrayList<>();
-        for (String role: BuildRolesFromRole(String.valueOf(user.getRole().getRoleName()))){
+        for (String role: BuildRolesFromRole(user.getRole().getRole_name())){
             listAuth.add(new SimpleGrantedAuthority(role));
         }
         UserDetails userDetails =  org.springframework.security.core.userdetails.User.builder().username(user.getEmail()).password(user.getPassword()).authorities(listAuth).build();
         return userDetails;
     }
     public List<String> BuildRolesFromRole(String role){
-        String roles = "ADMIN,MODIFIER,USER";
+        String roles = "ADMIN,USER,PARTNER";
         int index = role.indexOf(role);
         return Arrays.stream(roles.substring(index).split(",")).toList();
     }
