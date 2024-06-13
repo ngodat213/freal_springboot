@@ -30,14 +30,15 @@ public class SecurityConfig {
                         .anyRequest().permitAll()
         ).formLogin(AbstractConfiguredSecurityBuilder
                 ->AbstractConfiguredSecurityBuilder.loginPage("/login")
-                .successHandler(new HandleSuccessLogin())
+//                .successHandler(new HandleSuccessLogin())
                 .permitAll()
-        ).build();
+        ).logout(logout->logout.logoutUrl("/logout")).build();
     }
 
     public UserDetailsService UserDetailsService() {
         return customUserDetailService;
     }
+
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -45,6 +46,7 @@ public class SecurityConfig {
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
+
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
