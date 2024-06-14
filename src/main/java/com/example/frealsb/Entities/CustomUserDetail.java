@@ -18,7 +18,7 @@ public class CustomUserDetail implements UserDetails{
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        String roles = "ADMIN,MODIFIER,USER";
+        String roles = "ADMIN,PARTNER,USER";
         int index = roles.indexOf(user.getRole().getRole_name());
         String substring = roles.substring(index);
         String authString[] = substring.split(",");

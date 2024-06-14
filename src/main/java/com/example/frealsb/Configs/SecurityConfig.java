@@ -29,7 +29,7 @@ public class SecurityConfig {
                         .anyRequest().permitAll()
         ).formLogin(AbstractConfiguredSecurityBuilder
                 ->AbstractConfiguredSecurityBuilder.loginPage("/login")
-//                .successHandler(new HandleSuccessLogin())
+                .successHandler(new HandleSuccessLogin())
                 .permitAll()
         ).logout(logout->logout.logoutUrl("/logout")).build();
     }
