@@ -2,7 +2,6 @@ package com.example.frealsb.Services;
 
 import com.example.frealsb.Const.Constants;
 import com.example.frealsb.Entities.User;
-import com.example.frealsb.Enums.EnumRole;
 import com.example.frealsb.Repositories.RoleRepository;
 import com.example.frealsb.Repositories.UserRepository;
 import com.example.frealsb.RequestEntities.RequestRegisterUser;
@@ -13,7 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import com.example.frealsb.Services.Interface.IUserService;
 import com.example.frealsb.Util.EncryptionUtils;
 import jakarta.security.auth.message.AuthException;
-import jakarta.servlet.ServletContext;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -21,19 +19,21 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class UserService implements IUserService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository _userRepository;
     @Autowired
-    private RoleRepository roleRepository;
-    private ServletContext servletContext;
+    private RoleRepository _roleRepository;
+    @Autowired
+    private CloudinaryService _cloudinaryService;
 
     @Override
     public User findByEmail(String email) {
-        return userRepository.findByEmail(email);
+        return _userRepository.findByEmail(email);
     }
 
     @Override
@@ -45,8 +45,9 @@ public class UserService implements IUserService {
     public User register(RequestRegisterUser req) {
         try{
             if(req.getPassword().equals(req.getConfirmPassword()) ) {
-                final User user = req.toUser(roleRepository.findOneByName(EnumRole.CUSTOMER));
-                return userRepository.saveAndFlush(user);
+                req.setPassword(new BCryptPasswordEncoder().encode(req.getPassword()));
+                final User user = req.toUser(_roleRepository.findOneByName("USER"));
+                return _userRepository.saveAndFlush(user);
             }else{
                 throw new BadRequestException("Confirm password is not equals");
             }
@@ -63,7 +64,7 @@ public class UserService implements IUserService {
 
         user.setEmail(newEmail);
 
-        userRepository.saveAndFlush(user);
+        _userRepository.saveAndFlush(user);
     }
 
     @Override
@@ -75,7 +76,7 @@ public class UserService implements IUserService {
 
         user.setPassword(EncryptionUtils.PasswordEncoder(newPassword));
         // Sử dụng saveAndFlush khi bạn cần đảm bảo dữ liệu được ghi vào cơ sở dữ liệu ngay lập tức
-        userRepository.saveAndFlush(user);
+        _userRepository.saveAndFlush(user);
     }
 
     @Override
@@ -84,7 +85,17 @@ public class UserService implements IUserService {
 
         user.setBio(newProfileInfo.getBio());
 
-        userRepository.saveAndFlush(user);
+        _userRepository.saveAndFlush(user);
+    }
+
+    @Override
+    public void changeAvatar(MultipartFile file) {
+        final String avatarUrl =  _cloudinaryService.uploadFile(file);
+
+        User user = currentUser();
+        user.setAvatarPublicId(avatarUrl);
+
+        _userRepository.saveAndFlush(user);
     }
 
     @Override
@@ -93,7 +104,7 @@ public class UserService implements IUserService {
 
         user.setAvatarPublicId(Constants.DEFAULT_AVATAR);
 
-        userRepository.saveAndFlush(user);
+        _userRepository.saveAndFlush(user);
     }
 
     @Override
@@ -117,7 +128,7 @@ public class UserService implements IUserService {
     public boolean isAdmin() {
         User user = currentUser();
 
-        return user != null && user.hasRole(EnumRole.ADMIN);
+        return user != null && user.hasRole("ADMIN");
     }
 
     @Override
@@ -129,7 +140,7 @@ public class UserService implements IUserService {
 
         Authentication auth = securityContext.getAuthentication();
 
-        return userRepository.findByEmail(auth.getName());
+        return _userRepository.findByEmail(auth.getName());
     }
 
     @Override

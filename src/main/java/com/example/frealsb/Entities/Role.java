@@ -1,6 +1,5 @@
 package com.example.frealsb.Entities;
 
-import com.example.frealsb.Enums.EnumRole;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,8 +17,7 @@ public class Role {
     private String id;
 
     @Column(unique = true, nullable = false, length = 50)
-    @Enumerated(EnumType.STRING)
-    private EnumRole roleName;
+    private String role_name;
 
     @OneToMany(mappedBy = "role")
     private List<User> users;

@@ -4,6 +4,7 @@ import com.example.frealsb.Entities.User;
 import com.example.frealsb.RequestEntities.RequestRegisterUser;
 import jakarta.security.auth.message.AuthException;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface IUserService extends UserDetailsService {
 
@@ -19,7 +20,7 @@ public interface IUserService extends UserDetailsService {
 
     void changeProfileInfo(User newProfileInfo);
 
-//    void changeAvatar(UploadedAvatarInfo uploadedAvatarInfo);
+    void changeAvatar(MultipartFile file);
 
     void removeAvatar();
 

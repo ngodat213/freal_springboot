@@ -3,16 +3,13 @@ package com.example.frealsb.RequestEntities;
 import com.example.frealsb.Const.Constants;
 import com.example.frealsb.Entities.Role;
 import com.example.frealsb.Entities.User;
-import com.example.frealsb.Enums.EnumRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
+@Data
 @Getter
 @Setter
 @NoArgsConstructor
