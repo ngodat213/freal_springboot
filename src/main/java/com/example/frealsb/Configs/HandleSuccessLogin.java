@@ -17,7 +17,7 @@ public class HandleSuccessLogin extends SavedRequestAwareAuthenticationSuccessHa
         if (isAdmin) {
             setDefaultTargetUrl("/roles");
         }else{
-            setDefaultTargetUrl("/users");
+            setDefaultTargetUrl("/");
         }
         super.onAuthenticationSuccess(request, response, authentication);
     }

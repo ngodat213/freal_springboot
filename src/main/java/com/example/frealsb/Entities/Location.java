@@ -3,6 +3,7 @@ package com.example.frealsb.Entities;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -35,10 +36,21 @@ public class Location {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date deletedAt;
     // -- End timestamp --
-    
+
     private String city;
     private String province;
     private String features;
     private Date timestamp;
     private Date deleteAt;
+
+    // -- relationship --
+
+    @OneToMany(mappedBy = "location")
+    private List<Culture> cultureList;
+
+    @OneToMany(mappedBy = "location")
+    private List<FoodFeatured> foodFeaturedList;
+
+    @OneToMany(mappedBy = "location")
+    private List<Post> postList;
 }

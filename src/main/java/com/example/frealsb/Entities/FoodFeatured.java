@@ -38,6 +38,9 @@ public class FoodFeatured {
     
     private String title;
     private String description;
-    private String locationId;
-    private String categoryId;
+
+    // -- Relationships --
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    private Location location;
 }

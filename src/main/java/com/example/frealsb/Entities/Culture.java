@@ -40,5 +40,8 @@ public class Culture {
 
     private String title;
     private String description;
-    private String locationId;
+    // -- Relationship --
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    private Location location;
 }
