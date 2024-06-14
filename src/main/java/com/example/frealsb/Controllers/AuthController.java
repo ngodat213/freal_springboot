@@ -31,8 +31,8 @@ public class AuthController {
      * @layout: <a href="https://localhost:8080/register">...</a>
      * @method: POST
      */
-    @PostMapping("/register")
-    public String CreateUser(@RequestBody @Valid RequestRegisterUser registerUser){
+    @PostMapping("/register_submit")
+    public String CreateUser(RequestRegisterUser registerUser){
         userService.register(registerUser);
         return "redirect:/login";
     }

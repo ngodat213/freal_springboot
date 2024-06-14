@@ -23,10 +23,9 @@ public class SecurityConfig {
         return http.authorizeHttpRequests(
                 request->request
                         .requestMatchers("/").permitAll()
-                        .requestMatchers("/register").permitAll()
-                        .requestMatchers("/users").hasAuthority("CUSTOMER")
-                        .requestMatchers("/users/**").hasAuthority("PARTNER")
-                        .requestMatchers("/roles").hasAuthority("ADMIN")
+                        .requestMatchers("/users").hasAuthority("USER")
+                        .requestMatchers("/users/**").hasAuthority("PARTNER,USER")
+                        .requestMatchers("/roles").hasAuthority("ADMIN,PARTNER,USER")
                         .anyRequest().permitAll()
         ).formLogin(AbstractConfiguredSecurityBuilder
                 ->AbstractConfiguredSecurityBuilder.loginPage("/login")

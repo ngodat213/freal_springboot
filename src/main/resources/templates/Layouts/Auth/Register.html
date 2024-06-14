@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="Fragments/head :: head(Login)">
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>Register</title>
 </head>
 <body>
 <div class="container" id="container">
-  <div th:replace="/Fragments/login-slider.html :: login-slider">
-  </div>
+  <div th:replace="/Fragments/login-slider.html :: login-slider"></div>
   <div class="form-container sign-up" id="register-form">
-    <form th:action="@{/register}" method="post">
+    <form th:action="@{/register_submit}" method="post" th:object="${registerUser}">
       <h1>Create Account</h1>
       <div class="social-icons">
         <a class="icon" href="#"><i class="fa-brands fa-google-plus-g"></i></a>
@@ -24,25 +23,22 @@
       </div>
       <div class="row">
         <div class="col-6">
-          <input placeholder="First Name" type="text"/>
+          <input placeholder="First Name" type="text" name="firstName" th:field="*{firstName}"/>
         </div>
         <div class="col-6">
-          <input placeholder="Last Name" type="text"/>
+          <input placeholder="Last Name" type="text" name="lastName" th:field="*{lastName}"/>
         </div>
       </div>
-      <input placeholder="Email" type="email"/>
+      <input placeholder="Email" type="email" name="email" th:field="*{email}"/>
       <div class="show-item">
-        <input id="register-password" oninput="checkPasswordStrength()" placeholder="Password" type="password"/>
+        <input id="register-password" placeholder="Password" type="password" name="password" th:field="*{password}"/>
         <div id="password-strength"></div>
       </div>
-      <!-- Confirm password input -->
       <div class="show-item">
-        <input id="confirm-password" placeholder="Confirm Password" type="password"/>
+        <input id="confirm-password" placeholder="Confirm Password" type="password" name="confirmPassword" th:field="*{confirmPassword}" />
         <div id="password-match"></div>
       </div>
-      <button id="sign-up-btn" onclick="showOtpForm()" type="button">
-        Sign Up
-      </button>
+      <button id="sign-up-btn" type="submit">Sign Up</button>
       <p>Already have an account?<a onclick="location.href='/login'">
         <span class="font-weight-bold" style="font-weight: bold; color: #75b8ed">Login</span></a>
       </p>

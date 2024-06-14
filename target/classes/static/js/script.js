@@ -123,10 +123,10 @@ function checkPasswordMatch() {
 }
 
 // Hiển thị form OTP
-function showOtpForm() {
-  document.getElementById("register-form").style.display = "none";
-  document.getElementById("otp-form").style.display = "block";
-}
+// function showOtpForm() {
+//   document.getElementById("register-form").style.display = "none";
+//   document.getElementById("otp-form").style.display = "block";
+// }
 
 // Validate Sign Up
 function validateSignUp() {

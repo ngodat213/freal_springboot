@@ -45,6 +45,7 @@ public class UserService implements IUserService {
     public User register(RequestRegisterUser req) {
         try{
             if(req.getPassword().equals(req.getConfirmPassword()) ) {
+                req.setPassword(new BCryptPasswordEncoder().encode(req.getPassword()));
                 final User user = req.toUser(_roleRepository.findOneByName("USER"));
                 return _userRepository.saveAndFlush(user);
             }else{
