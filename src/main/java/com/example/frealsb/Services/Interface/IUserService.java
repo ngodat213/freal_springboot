@@ -31,5 +31,4 @@ public interface IUserService extends UserDetailsService {
     boolean isAdmin();
 
     User currentUser();
-
 }
