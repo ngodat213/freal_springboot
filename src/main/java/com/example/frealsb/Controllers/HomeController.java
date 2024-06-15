@@ -11,6 +11,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class HomeController {
@@ -33,4 +35,17 @@ public class HomeController {
         model.addAttribute("events", eventService.getClass());
         return "Layouts/Home/index";
     }
+
+    @PostMapping("/add_friend")
+    public String addFriend(@AuthenticationPrincipal CustomUserDetail customUserDetail, @PathVariable String requestId){
+        User user = customUserDetail.getUser();
+//        model.addAttribute("posts", postService.getPostsNew());
+        return "redirect:/index";
+    }
+
+    /*@PostMapping("/add_friend")
+    public String declineFriend(@AuthenticationPrincipal CustomUserDetail customUserDetail, Model model){
+        User user = customUserDetail.getUser();
+        model.addAttribute("posts", postService.getPostsNew());
+    }*/
 }

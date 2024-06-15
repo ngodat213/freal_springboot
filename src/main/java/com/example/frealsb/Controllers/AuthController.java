@@ -53,7 +53,7 @@ public class AuthController {
         return "Layouts/Auth/Me";
     }
 
-    @GetMapping("/changepassword")
+    @GetMapping("/change_password")
     public String ChangePassword(@AuthenticationPrincipal CustomUserDetail customUserDetail, Model model){
         User user = customUserDetail.getUser();
         model.addAttribute("user", user);
