@@ -64,9 +64,9 @@ public class AuthController {
     public String ChangePassword_Submit(@AuthenticationPrincipal CustomUserDetail customUserDetail, @RequestParam("password") String password, @RequestParam("confirmPassword") String confirmPassword, Model model){
         try {
             userService.changePassword(password, confirmPassword);
-            return "redirect:/changepassword?done";
+            return "redirect:/ChangePassword?done";
         }catch (Exception e){
-            return "redirect:/changepassword?error";
+            return "redirect:/ChangePassword?error";
         }
     }
 }
