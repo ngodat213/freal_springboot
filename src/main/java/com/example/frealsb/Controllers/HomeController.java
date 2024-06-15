@@ -2,7 +2,7 @@ package com.example.frealsb.Controllers;
 
 import com.example.frealsb.Services.Interface.IEventService;
 import com.example.frealsb.Services.Interface.IPostService;
-import com.example.frealsb.Services.UserService;
+import com.example.frealsb.Services.Interface.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,9 +15,7 @@ public class HomeController {
     @Autowired
     private IEventService eventService;
     @Autowired
-    private UserService userService;
-    @Autowired
-
+    private IUserService userService;
 
     @GetMapping("/")
     public String Register(Model model){

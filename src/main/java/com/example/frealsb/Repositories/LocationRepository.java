@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface LocationRepository extends JpaRepository<Location, String> {
-    List<Location> findAllBy(String city, Pageable pageable);
+    List<Location> findAllBy(String s, Pageable pageable);
 }
