@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="Fragments/main_head :: head(Freal)">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div th:replace="Fragments/sidebar"></div>
+    <div class="main-container">
+        <div th:replace="Fragments/navbar"></div>
+        <div class="container">
+            <main class="content">
+                <header>
+                    <input type="text" placeholder="What's on your mind?" />
+                </header>
+                <section class="post">
+                    <div class="post-header">
+                        <img src="profile.jpg" alt="profile" />
+                        <div class="post-info">
+                            <h3>Lucky Andreas</h3>
+                            <span>12 minutes ago</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <p>What is the reason guys yesterday I uploaded some kind of content...</p>
+                        <img src="post-image.jpg" alt="post" />
+                    </div>
+                    <div class="post-actions">
+                        <button>Like</button>
+                        <button>Comment</button>
+                        <button>Share</button>
+                    </div>
+                </section>
+            </main>
+            <aside class="trending">
+                <h2>Today Trending</h2>
+                <ul>
+                    <li>Figma maintenance</li>
+                    <li>Blender Update</li>
+                    <li>Slackoverflow server</li>
+                    <li>Javascript new</li>
+                </ul>
+                <div class="suggested-community">
+                    <h2>Suggested community</h2>
+                    <button>Join community</button>
+                </div>
+                <div class="friends-list">
+                    <h2>My friends</h2>
+                    <ul>
+                        <li>Ridwan Beler</li>
+                        <li>Maria Galau</li>
+                        <li>Chrish Bule</li>
+                        <li>Gerrald Kocak</li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+    <script src="https://kit.fontawesome.com/99cbdec5b3.js" crossorigin="anonymous"></script>
+</body>
+</html>
