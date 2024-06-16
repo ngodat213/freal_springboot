@@ -6,8 +6,8 @@ import com.example.frealsb.RequestEntities.RequestRole;
 import java.util.List;
 
 public interface IRoleService {
-    public List<Role> getAllRoles();
-    public Role createRole(RequestRole requestRole);
-    public Role getRoleById(String id);
+    List<Role> getAllRoles();
+    Role createRole(RequestRole requestRole);
+    Role getRoleById(String id);
 
 }

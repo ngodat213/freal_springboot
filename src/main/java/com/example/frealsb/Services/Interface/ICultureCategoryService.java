@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface ICultureCategoryService {
     // __CURD__ //
-    public List<CultureCategory> getAllCultureCategory(String s, int page, int size);
-    public CultureCategory getCultureCategory(String id);
-    public CultureCategory addCultureCategory(RequestCultureCategory req);
-    public CultureCategory updateCultureCategory(RequestCultureCategory req);
-    public CultureCategory deleteCultureCategory(String id);
+    List<CultureCategory> getAllCultureCategory(String s, int page, int size);
+    CultureCategory getCultureCategory(String id);
+    CultureCategory addCultureCategory(RequestCultureCategory req);
+    CultureCategory updateCultureCategory(RequestCultureCategory req);
+    CultureCategory deleteCultureCategory(String id);
 }

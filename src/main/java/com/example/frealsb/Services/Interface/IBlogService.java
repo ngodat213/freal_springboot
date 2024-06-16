@@ -8,10 +8,10 @@ import java.util.List;
 
 public interface IBlogService {
     // __CURD__ //
-    public List<Blog> getBlogs(String s, int page, int size);
-    public Blog getBlog(String id);
-    public Blog addBlog(RequestBlog req, User user);
-    public Blog updateBlog(RequestBlog req);
-    public Blog deleteBlog(String id);
+    List<Blog> getBlogs(String s, int page, int size);
+    Blog getBlog(String id);
+    Blog addBlog(RequestBlog req, User user);
+    Blog updateBlog(RequestBlog req);
+    Blog deleteBlog(String id);
     // __FEATURE__ //
 }
