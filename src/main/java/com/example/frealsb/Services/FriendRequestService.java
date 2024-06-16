@@ -1,6 +1,7 @@
 package com.example.frealsb.Services;
 
 import com.example.frealsb.Entities.FriendRequest;
+import com.example.frealsb.Entities.User;
 import com.example.frealsb.Repositories.FriendRequestRepository;
 import com.example.frealsb.Services.Interface.IFriendRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ public class FriendRequestService implements IFriendRequestService {
     private FriendRequestRepository friendRequestRepository;
 
     @Override
-    public FriendRequest sendRequest(FriendRequest request) {
+    public FriendRequest sendRequest(String userId, FriendRequest request) {
         request.setStatus("PENDING");
         request.setCreatedAt(LocalDateTime.now());
         return friendRequestRepository.save(request);

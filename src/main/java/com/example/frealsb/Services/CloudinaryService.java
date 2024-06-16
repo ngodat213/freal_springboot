@@ -20,6 +20,8 @@ public class CloudinaryService implements ICloudinaryService {
 
     @Autowired
     private Cloudinary cloudinaryConfig;
+    private String link = "https://res.cloudinary.com/duhncgkpo/image/upload/v1717508494/";
+    private String extensionImage = ".png";
 
     /**
      * Uploads a file to Cloudinary.
@@ -36,6 +38,10 @@ public class CloudinaryService implements ICloudinaryService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String getUrlByPublicId(String publicId) {
+        return link + publicId + extensionImage;
     }
 
     /**

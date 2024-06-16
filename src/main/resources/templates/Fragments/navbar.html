@@ -1,29 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <nav class="navbar">
     <div class="navbar-left">
         <ul>
             <li>
-                <a href="#"><i class="fa-solid fa-house"></i> Home</a>
+                <a href="HomeFreal.html"><i href="HomeFreal.html" class="fa-solid fa-house"></i> Home</a>
             </li>
+        </ul>
+    </div>
+    <div class="navbar-center">
+        <ul>
+            <li><a href="#">Explore</a></li>
+            <li><a href="#">Community feed</a></li>
             <li>
-                <a href="#">Explore</a>
-            </li>
-            <li>
-                <a href="#">Community feed</a>
-            </li>
-            <li>
-                <a href="#">Mutual friend <span>12</span></a>
+                <a href="#">Mutual friend <span></span></a>
             </li>
         </ul>
     </div>
     <div class="navbar-right">
-        <a href="#"><i class="fas fa-comment-alt"></i></a>
-        <a href="#"><i class="fas fa-bell"></i></a>
-        <a href="#" class="profile-link">
-            <img src="profile-icon.png" alt="Profile" />
-            <span>Havid N</span>
-        </a>
+        <ul>
+            <li>
+                <a class="navbar-right__item" href="#"><i class="fa-solid fa-comment-dots"></i></a>
+            </li>
+            <li>
+                <a class="navbar-right__item" href="#"><i class="fa-solid fa-bell"></i></a>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="profile-link" sec:authorize="isAuthenticated()">
+                    <span th:text="${#authentication.principal.getDisplayName()}"></span>
+                    <img th:src="${#authentication.principal.getAvatar()}" alt="Profile" />
+                    <i class="fa-solid fa-circle-chevron-down"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Add account</a></li>
+                    <li><a href="#">Setting account</a></li>
+                    <li><a href="#">LogOut</a></li>
+                </ul>
+            </li>
+        </ul>
     </div>
 </nav>
 </html>

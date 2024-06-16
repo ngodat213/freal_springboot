@@ -1,6 +1,5 @@
 package com.example.frealsb.Services;
 
-import com.example.frealsb.Entities.Comment;
 import com.example.frealsb.Entities.Post;
 import com.example.frealsb.Repositories.CommentRepository;
 import com.example.frealsb.Repositories.PostRepository;

@@ -7,11 +7,8 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface ILocationService {
-    public List<Location> getAllLocation(String city, int page, int size);
-
-    public Location getLocationById(String id);
-
-    public Location saveLocation(Location location);
-
-    public void deleteLocation(String id);
+    List<Location> getAllLocation(String city, int page, int size);
+    Location getLocationById(String id);
+    Location saveLocation(Location location);
+    void deleteLocation(String id);
 }

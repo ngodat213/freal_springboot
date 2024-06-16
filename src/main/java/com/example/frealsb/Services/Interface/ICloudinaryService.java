@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.Map;
 
 public interface ICloudinaryService {
-    public String uploadFile(MultipartFile file);
-    public File convertMultiPartToFile(MultipartFile file) throws IOException;
-    public void delete(String publicId);
+    String uploadFile(MultipartFile file);
+    File convertMultiPartToFile(MultipartFile file) throws IOException;
+    void delete(String publicId);
 }

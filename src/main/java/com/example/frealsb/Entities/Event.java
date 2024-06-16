@@ -46,10 +46,11 @@ public class Event {
     private Date timeEnd;
     @Column(nullable = true)
     private String status;
+    @ManyToOne
+    @JoinColumn(name = "culture_id")
+    private Culture culture;
     @Column(nullable = true)
-    private String cultureId;
-    @Column(nullable = true)
-    private String location;
+    private String locationDetail;
     @Column(nullable = true)
     private String contactNumber;
     @Column(nullable = true)
