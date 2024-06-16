@@ -1,19 +1,16 @@
 package com.example.frealsb.RequestEntities;
 
 import com.example.frealsb.Entities.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
+@Data
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class RequestUpdateUser {
-    private String id;
     private String password;
     private String email;
     private String phone;
