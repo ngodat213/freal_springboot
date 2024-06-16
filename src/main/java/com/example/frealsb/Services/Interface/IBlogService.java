@@ -12,6 +12,6 @@ public interface IBlogService {
     public Blog getBlog(String id);
     public Blog addBlog(RequestBlog req, User user);
     public Blog updateBlog(RequestBlog req);
-    public void deleteBlog(String id);
+    public Blog deleteBlog(String id);
     // __FEATURE__ //
 }

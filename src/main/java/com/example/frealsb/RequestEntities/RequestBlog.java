@@ -14,13 +14,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RequestBlog {
+    private String id;
     private String title;
     private String description;
     private String images;
     private String location;
     private List<Tag> tags;
 
-    public Blog toAddBlog(User user){
+    public Blog toAddData(User user){
         Blog blog = new Blog();
         blog.setUser(user);
         blog.setTitle(title);
@@ -32,8 +33,9 @@ public class RequestBlog {
         return blog;
     }
 
-    public Blog toUpdateBlog(){
+    public Blog toUpdateData(){
         Blog blog = new Blog();
+        blog.setId(id);
         blog.setTitle(title);
         blog.setDescription(description);
         blog.setImages(images);

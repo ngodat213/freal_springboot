@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -30,16 +31,18 @@ public class BlogService implements IBlogService {
 
     @Override
     public Blog addBlog(RequestBlog req, User user) {
-        return blogRepository.save(req.toAddBlog(user));
+        return blogRepository.saveAndFlush(req.toAddData(user));
     }
 
     @Override
     public Blog updateBlog(RequestBlog req) {
-        return blogRepository.save(req.toUpdateBlog());
+        return blogRepository.saveAndFlush(req.toUpdateData());
     }
 
     @Override
-    public void deleteBlog(String id) {
-        blogRepository.deleteById(id);
+    public Blog deleteBlog(String id) {
+        Blog blog = getBlog(id);
+        blog.setDeletedAt(new Date());
+        return blogRepository.saveAndFlush(blog);
     }
 }
