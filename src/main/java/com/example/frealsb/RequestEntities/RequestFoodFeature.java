@@ -4,6 +4,8 @@ import com.example.frealsb.Entities.FoodFeatured;
 import com.example.frealsb.Entities.Location;
 import lombok.*;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,6 +23,7 @@ public class RequestFoodFeature {
         data.setTitle(title);
         data.setDescription(description);
         data.setLocation(location);
+        data.setCreatedAt(new Date());
         return data;
     }
 
@@ -30,6 +33,7 @@ public class RequestFoodFeature {
         data.setTitle(title);
         data.setDescription(description);
         data.setLocation(location);
+        data.setUpdatedAt(new Date());
         return data;
     }
 }
