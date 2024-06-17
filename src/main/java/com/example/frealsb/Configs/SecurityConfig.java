@@ -1,6 +1,6 @@
 package com.example.frealsb.Configs;
 
-import com.example.frealsb.Services.CustomUserDetailService;
+import com.example.frealsb.Modules.Auth.Service.CustomUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

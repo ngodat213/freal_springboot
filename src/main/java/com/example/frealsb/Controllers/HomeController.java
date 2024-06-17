@@ -1,11 +1,11 @@
 package com.example.frealsb.Controllers;
 
-import com.example.frealsb.Entities.CustomUserDetail;
-import com.example.frealsb.Entities.User;
-import com.example.frealsb.Services.Interface.IEventService;
-import com.example.frealsb.Services.Interface.IFriendRequestService;
-import com.example.frealsb.Services.Interface.IPostService;
-import com.example.frealsb.Services.Interface.IUserService;
+import com.example.frealsb.Modules.Auth.Model.CustomUserDetail;
+import com.example.frealsb.Modules.User.Model.User;
+import com.example.frealsb.Modules.Event.Service.IEventService;
+import com.example.frealsb.Modules.FriendRequest.Service.IFriendRequestService;
+import com.example.frealsb.Modules.Post.Service.IPostService;
+import com.example.frealsb.Modules.User.Service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;

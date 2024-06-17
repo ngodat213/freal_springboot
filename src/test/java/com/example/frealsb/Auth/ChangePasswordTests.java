@@ -1,9 +1,7 @@
 package com.example.frealsb.Auth;
 
-import com.example.frealsb.Entities.User;
-import com.example.frealsb.Services.UserService;
-import com.example.frealsb.Util.EncryptionUtils;
-import org.junit.jupiter.api.Assertions;
+import com.example.frealsb.Modules.User.Model.User;
+import com.example.frealsb.Modules.User.Service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;

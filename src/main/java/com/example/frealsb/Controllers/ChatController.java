@@ -1,12 +1,11 @@
 package com.example.frealsb.Controllers;
 
-import com.example.frealsb.Entities.Messsage;
+import com.example.frealsb.Modules.Message.Model.Messsage;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class ChatController {

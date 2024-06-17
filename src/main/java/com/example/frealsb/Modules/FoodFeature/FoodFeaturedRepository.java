@@ -1,0 +1,13 @@
+package com.example.frealsb.Modules.FoodFeature;
+
+import com.example.frealsb.Modules.FoodFeature.Model.FoodFeatured;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface FoodFeaturedRepository extends JpaRepository<FoodFeatured, String> {
+    List<FoodFeatured> findAllBy(String s, Pageable pageable);
+}
