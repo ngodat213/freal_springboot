@@ -39,8 +39,12 @@ public class Food {
     private String title;
     private String description;
     private String location;
-    private String foodFeaturedId;
-    private String foodCategoryId;
+    @ManyToOne
+    @JoinColumn(name = "food_featured_id")
+    private FoodFeatured foodFeatured;
+    @ManyToOne
+    @JoinColumn(name = "food_category_id")
+    private FoodCategory foodCategory;
     private double price;
     private double rating;
     private String openingHours;
