@@ -1,8 +1,8 @@
-package com.example.frealsb.RequestEntities;
+package com.example.frealsb.Modules.Food.Request;
 
-import com.example.frealsb.Entities.Food;
-import com.example.frealsb.Entities.FoodCategory;
-import com.example.frealsb.Entities.FoodFeatured;
+import com.example.frealsb.Modules.Food.Model.Food;
+import com.example.frealsb.Modules.FoodCategory.Model.FoodCategory;
+import com.example.frealsb.Modules.FoodFeature.Model.FoodFeatured;
 import lombok.*;
 
 import java.util.Date;
@@ -36,7 +36,6 @@ public class RequestFood {
         data.setRating(rating);
         data.setOpeningHours(openingHours);
         data.setContactNumber(contactNumber);
-        data.setCreatedAt(new Date());
         return data;
     }
 
@@ -52,7 +51,6 @@ public class RequestFood {
         data.setRating(rating);
         data.setOpeningHours(openingHours);
         data.setContactNumber(contactNumber);
-        data.setUpdatedAt(new Date());
         return data;
     }
 }

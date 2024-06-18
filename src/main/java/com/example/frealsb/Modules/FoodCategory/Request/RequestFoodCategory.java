@@ -1,10 +1,7 @@
-package com.example.frealsb.RequestEntities;
+package com.example.frealsb.Modules.FoodCategory.Request;
 
-import com.example.frealsb.Entities.CultureCategory;
-import com.example.frealsb.Entities.FoodCategory;
+import com.example.frealsb.Modules.FoodCategory.Model.FoodCategory;
 import lombok.*;
-
-import java.util.Date;
 
 @Getter
 @Setter
@@ -19,7 +16,6 @@ public class RequestFoodCategory {
     public FoodCategory toAddData(){
         FoodCategory data = new FoodCategory();
         data.setTitle(title);
-        data.setCreatedAt(new Date());
         return data;
     }
 
@@ -27,7 +23,6 @@ public class RequestFoodCategory {
         FoodCategory data = new FoodCategory();
         data.setId(id);
         data.setTitle(title);
-        data.setUpdatedAt(new Date());
         return data;
     }
 }

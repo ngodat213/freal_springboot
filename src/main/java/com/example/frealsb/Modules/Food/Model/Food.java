@@ -1,6 +1,8 @@
 package com.example.frealsb.Modules.Food.Model;
 
 import com.example.frealsb.Common.AbstractEntity;
+import com.example.frealsb.Modules.FoodCategory.Model.FoodCategory;
+import com.example.frealsb.Modules.FoodFeature.Model.FoodFeatured;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -19,8 +21,12 @@ public class Food extends AbstractEntity {
     private String title;
     private String description;
     private String location;
-    private String foodFeaturedId;
-    private String foodCategoryId;
+    @ManyToOne
+    @JoinColumn(name = "food_featured_id")
+    private FoodFeatured foodFeatured;
+    @ManyToOne
+    @JoinColumn(name = "food_category_id")
+    private FoodCategory foodCategory;
     private double price;
     private double rating;
     private String openingHours;

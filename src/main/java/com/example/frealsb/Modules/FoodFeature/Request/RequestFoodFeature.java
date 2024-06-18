@@ -1,4 +1,4 @@
-package com.example.frealsb.RequestEntities;
+package com.example.frealsb.Modules.FoodFeature.Request;
 
 import com.example.frealsb.Entities.FoodFeatured;
 import com.example.frealsb.Entities.Location;
