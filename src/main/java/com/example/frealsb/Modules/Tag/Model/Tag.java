@@ -15,10 +15,6 @@ import java.util.Collection;
 @ToString
 @Entity
 public class Tag extends AbstractEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
-
     @Column(length = 30, nullable = false, unique = true)
     private String name;
 

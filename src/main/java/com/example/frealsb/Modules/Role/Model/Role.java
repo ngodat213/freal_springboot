@@ -14,10 +14,6 @@ import java.util.List;
 @ToString
 @Entity
 public class Role extends AbstractEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
-
     @Column(unique = true, nullable = false, length = 50)
     private String role_name;
 

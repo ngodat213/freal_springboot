@@ -20,9 +20,6 @@ import java.util.List;
 @ToString
 @Entity
 public class Culture extends AbstractEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
     private String title;
     private String description;
     // -- Relationship --

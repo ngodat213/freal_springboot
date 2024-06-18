@@ -20,9 +20,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 @ToString
 @Entity
 public class Location extends AbstractEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
     private String city;
     private String province;
     private String features;

@@ -29,7 +29,6 @@ public class RequestBlog {
         blog.setImages(images);
         blog.setLocation(location);
         blog.setTags(tags);
-        blog.setCreatedAt(new Date());
         return blog;
     }
 
@@ -41,7 +40,6 @@ public class RequestBlog {
         blog.setImages(images);
         blog.setLocation(location);
         blog.setTags(tags);
-        blog.setUpdatedAt(new Date());
         return blog;
     }
 }

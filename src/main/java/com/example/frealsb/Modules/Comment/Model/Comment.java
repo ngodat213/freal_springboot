@@ -21,9 +21,6 @@ import java.util.List;
 @ToString
 @Entity
 public class Comment extends AbstractEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
     private String title;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)

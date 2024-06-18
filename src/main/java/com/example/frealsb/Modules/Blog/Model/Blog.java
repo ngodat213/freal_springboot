@@ -20,9 +20,6 @@ import java.util.Date;
 @ToString
 @Entity
 public class Blog extends AbstractEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
     private String title;
     private String description;
     private String images;

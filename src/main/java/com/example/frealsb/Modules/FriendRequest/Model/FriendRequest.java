@@ -16,10 +16,6 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public class FriendRequest extends AbstractEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
-
     @ManyToOne
     @JoinColumn(name = "requester_id")
     private User requester;

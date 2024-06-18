@@ -18,7 +18,6 @@ public class RequestCultureCategory {
     public CultureCategory toAddData(){
         CultureCategory data = new CultureCategory();
         data.setTitle(title);
-        data.setCreatedAt(new Date());
         return data;
     }
 
@@ -26,7 +25,6 @@ public class RequestCultureCategory {
         CultureCategory data = new CultureCategory();
         data.setId(id);
         data.setTitle(title);
-        data.setUpdatedAt(new Date());
         return data;
     }
 }

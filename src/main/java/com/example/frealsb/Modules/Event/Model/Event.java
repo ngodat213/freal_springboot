@@ -18,9 +18,6 @@ import java.util.Date;
 @ToString
 @Entity
 public class Event extends AbstractEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
     @Column(nullable = true)
     private String title;
     @Column(nullable = true)

@@ -1,117 +1,60 @@
 package com.example.frealsb.Modules.User.Service;
 
-import com.example.frealsb.Const.Constants;
+import com.example.frealsb.Excepciton.DuplicateResourceException;
+import com.example.frealsb.Modules.Auth.Request.UserPasswordChange;
+import com.example.frealsb.Modules.Auth.Request.UserPasswordReset;
+import com.example.frealsb.Modules.User.Model.Otp;
 import com.example.frealsb.Modules.User.Model.User;
 import com.example.frealsb.Modules.Cloudinary.Service.CloudinaryService;
 import com.example.frealsb.Modules.Role.RoleRepository;
-import com.example.frealsb.Modules.User.UserRepository;
+import com.example.frealsb.Modules.User.Reponsitory.OtpRepository;
+import com.example.frealsb.Modules.User.Reponsitory.UserRepository;
 import com.example.frealsb.Modules.Auth.Request.RequestRegisterUser;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import jakarta.security.auth.message.AuthException;
-import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.Optional;
 
 @Service
+@Transactional
 public class UserService implements IUserService {
 
     @Autowired
-    private UserRepository _userRepository;
+    private UserRepository userRepository;
     @Autowired
-    private RoleRepository _roleRepository;
-    @Autowired
-    private CloudinaryService _cloudinaryService;
+    private OtpRepository otpRepository;
+
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public User findByEmail(String email) {
-        return _userRepository.findByEmail(email);
-    }
-
-    @Override
-    public boolean emailExists(String email) {
-        return findByEmail(email) != null;
+        return userRepository.findByEmail(email);
     }
 
     @Override
     public User register(RequestRegisterUser req) {
-        try{
-            if(req.getPassword().equals(req.getConfirmPassword()) ) {
-                req.setPassword(new BCryptPasswordEncoder().encode(req.getPassword()));
-                final User user = req.toUser(_roleRepository.findOneByName("USER"));
-                return _userRepository.saveAndFlush(user);
+        if(!userRepository.existsByEmail(req.getEmail())){
+            if(checkPassword(req.getPassword(), req.getConfirmPassword())) {
+                req.setPassword(encodePassword(req.getPassword()));
+
+                final User user = req.toUser();
+                return userRepository.saveAndFlush(user);
             }else{
-                throw new BadRequestException("Confirm password is not equals");
+                throw new DuplicateResourceException("Password and confirm password is not equals");
             }
-        } catch (Exception e){
-            throw  new RuntimeException(e.getMessage());
+        }else{
+            throw new DuplicateResourceException("The user with email [%s] already exists".formatted(req.getEmail()));
         }
-    }
-
-    @Override
-    public void changeEmail(String newEmail, String currentPassword) throws AuthException {
-        User user = currentUser();
-        if (!new BCryptPasswordEncoder().matches(currentPassword, user.getPassword()))
-            throw new AuthException("password does not match");
-
-        user.setEmail(newEmail);
-
-        _userRepository.saveAndFlush(user);
-    }
-
-    @Override
-    public void changePassword(String newPassword, String currentPassword) throws AuthException {
-        User user = currentUser();
-
-        if (!EncryptionUtils.PasswordMatch(currentPassword, user))
-            throw new AuthException("password does not match");
-
-        user.setPassword(EncryptionUtils.PasswordEncoder(newPassword));
-        // Sử dụng saveAndFlush khi bạn cần đảm bảo dữ liệu được ghi vào cơ sở dữ liệu ngay lập tức
-        _userRepository.saveAndFlush(user);
-    }
-
-    @Override
-    public void changeProfileInfo(User newProfileInfo) {
-        User user = currentUser();
-
-        user.setBio(newProfileInfo.getBio());
-
-        _userRepository.saveAndFlush(user);
-    }
-
-    @Override
-    public void changeAvatar(MultipartFile file) {
-        final String avatarUrl =  _cloudinaryService.uploadFile(file);
-
-        User user = currentUser();
-        user.setAvatarPublicId(avatarUrl);
-
-        _userRepository.saveAndFlush(user);
-    }
-
-    @Override
-    public void removeAvatar() {
-        User user = currentUser();
-
-        user.setAvatarPublicId(Constants.DEFAULT_AVATAR);
-
-        _userRepository.saveAndFlush(user);
-    }
-
-    @Override
-    public void authenticate(User user) {
-        UserDetails userDetails = loadUserByUsername(user.getEmail());
-
-        Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(auth);
     }
 
     @Override
@@ -124,13 +67,6 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public boolean isAdmin() {
-        User user = currentUser();
-
-        return user != null && user.hasRole("ADMIN");
-    }
-
-    @Override
     public User currentUser() {
         if(!isAuthenticated()){
             return null;
@@ -139,11 +75,105 @@ public class UserService implements IUserService {
 
         Authentication auth = securityContext.getAuthentication();
 
-        return _userRepository.findByEmail(auth.getName());
+        return userRepository.findByEmail(auth.getName());
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return null;
+    }
+
+    @Override
+    public boolean checkOldPassword(User user, String oldPassword) {
+        if(checkCryptCompare(user.getPassword(), oldPassword)) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void UpdatePassword(User authenticatedUser, UserPasswordChange userPasswordChange) {
+        Optional.of(authenticatedUser).stream()
+                .filter(u->checkCryptCompare(
+                        userPasswordChange.oldPassword(), u.getPassword()))
+                .map(u->{
+                    u.setPassword(encodePassword(userPasswordChange.newPassword()));
+                    return userRepository.saveAndFlush(u);
+                });
+    }
+
+    @Override
+    public void handleResetPassword(UserPasswordReset userPasswordReset){
+        User user = findByEmail(userPasswordReset.email());
+        Otp otp = otpRepository.findByUser_Id(user.getId())
+                .filter(o -> o.getExpiredAt().isAfter(LocalDateTime.now()))
+                .filter(o -> o.getCode().equals(userPasswordReset.otpCode()))
+                .orElseThrow(() -> new RuntimeException("Invalid otp code"));
+        user.setPassword(passwordEncoder.encode(userPasswordReset.newPassword()));
+        userRepository.save(user);
+        otpRepository.delete(otp);
+    }
+
+    @Override
+    public User getUserByUsername(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public void UpdateFailCount(User user){
+        int count = userRepository.countFailByEmail(user.getEmail());
+        if(user.getLockExpired().getTime()<System.currentTimeMillis()){
+            user.setEnabled(true);
+            user.setLockExpired(null);
+            user.setCountFail(0);
+        }
+        user.setCountFail(count+1);
+        if(count==3){
+            user.setEnabled(false);
+            user.setLockExpired(new Date(System.currentTimeMillis()+1000*60*15));
+        }
+        userRepository.save(user);
+    }
+
+    @Override
+    public void ResetLoginFail(User user){
+        user.setLockExpired(null);
+        user.setCountFail(0);
+        userRepository.save(user);
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public void GenTokenResetPassword(User user){
+        user.setTokenResetPassword(GenToken(45));
+        user.setTokenResetPasswordExpired(new Date(System.currentTimeMillis()+1000*60*10));
+        userRepository.save(user);
+    }
+
+    @Override
+    public String GenToken(int Length){
+        return "1111";
+    }
+
+    @Override
+    public User getUserByToken(String token){
+        return userRepository.findByToken(token);
+    }
+
+    // Private method
+    private boolean checkCryptCompare(String password, String oldPassword){
+        return new BCryptPasswordEncoder().matches(oldPassword, password);
+    }
+
+    private boolean checkPassword(String password, String comfirmPassword) {
+        return password.equals(comfirmPassword);
+    }
+
+    private String encodePassword(String password) {
+        return new BCryptPasswordEncoder().encode(password);
     }
 }

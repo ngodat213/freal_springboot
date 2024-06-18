@@ -27,7 +27,6 @@ public class RequestUpdateUser {
         user.setAvatarPublicId(avatarPublicId);
         user.setPhone(phone);
         user.setBio(bio);
-        user.setUpdatedAt(new Date());
         return user;
     }
 }

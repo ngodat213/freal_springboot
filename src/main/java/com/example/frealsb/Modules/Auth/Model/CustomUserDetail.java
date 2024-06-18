@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Data
@@ -23,15 +24,7 @@ public class CustomUserDetail implements UserDetails{
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        String roles = "ADMIN,PARTNER,USER";
-        int index = roles.indexOf(user.getRole().getRole_name());
-        String substring = roles.substring(index);
-        String authString[] = substring.split(",");
-        for (String auth : authString) {
-            authorities.add(new SimpleGrantedAuthority(auth));
-        }
-        return authorities;
+        return Collections.singleton(user.getRole());
     }
 
     @Override

@@ -22,7 +22,6 @@ public class RequestCulture {
         culture.setTitle(title);
         culture.setDescription(description);
         culture.setLocation(location);
-        culture.setCreatedAt(new Date());
         return culture;
     }
 
@@ -32,7 +31,6 @@ public class RequestCulture {
         culture.setTitle(title);
         culture.setDescription(description);
         culture.setLocation(location);
-        culture.setUpdatedAt(new Date());
         return culture;
     }
 }

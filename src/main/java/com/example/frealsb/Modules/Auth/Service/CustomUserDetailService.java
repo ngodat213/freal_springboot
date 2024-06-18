@@ -3,7 +3,7 @@ package com.example.frealsb.Modules.Auth.Service;
 import com.example.frealsb.Modules.Auth.Model.CustomUserDetail;
 import com.example.frealsb.Modules.User.Service.UserService;
 import com.example.frealsb.Modules.User.Model.User;
-import com.example.frealsb.Modules.User.UserRepository;
+import com.example.frealsb.Modules.User.Reponsitory.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

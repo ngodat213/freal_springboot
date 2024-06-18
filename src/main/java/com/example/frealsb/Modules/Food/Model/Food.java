@@ -16,9 +16,6 @@ import java.util.Date;
 @ToString
 @Entity
 public class Food extends AbstractEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
     private String title;
     private String description;
     private String location;

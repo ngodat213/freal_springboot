@@ -16,8 +16,5 @@ import java.util.Date;
 @ToString
 @Entity
 public class CultureCategory extends AbstractEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
     private String title;
 }

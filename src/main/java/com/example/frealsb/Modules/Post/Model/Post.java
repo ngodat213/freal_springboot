@@ -27,10 +27,6 @@ import java.util.List;
 @ToString
 @Entity
 public class Post extends AbstractEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
-
     @Min(0)
     private int fav = 0;
 
@@ -59,14 +55,14 @@ public class Post extends AbstractEntity {
     @ManyToOne()
     @JoinColumn(name = "location_id")
     private Location location;
-
-    @ManyToOne()
-    @JoinColumn(name = "event_id")
-    private Event event;
-
-    @ManyToOne()
-    @JoinColumn(name = "food_id")
-    private Food food;
+//
+//    @ManyToOne()
+//    @JoinColumn(name = "event_id")
+//    private Event event;
+//
+//    @ManyToOne()
+//    @JoinColumn(name = "food_id")
+//    private Food food;
 
     private String video;
 }

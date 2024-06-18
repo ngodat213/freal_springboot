@@ -1,5 +1,7 @@
 package com.example.frealsb.Modules.User.Service;
 
+import com.example.frealsb.Modules.Auth.Request.UserPasswordChange;
+import com.example.frealsb.Modules.Auth.Request.UserPasswordReset;
 import com.example.frealsb.Modules.User.Model.User;
 import com.example.frealsb.Modules.Auth.Request.RequestRegisterUser;
 import jakarta.security.auth.message.AuthException;
@@ -10,25 +12,29 @@ public interface IUserService extends UserDetailsService {
 
     User findByEmail(String email);
 
-    boolean emailExists(String email);
-
     User register(RequestRegisterUser req);
-
-    void changeEmail(String newEmail, String currentPassword) throws AuthException;
-
-    void changePassword(String newPassword, String currentPassword) throws AuthException;
-
-    void changeProfileInfo(User newProfileInfo);
-
-    void changeAvatar(MultipartFile file);
-
-    void removeAvatar();
-
-    void authenticate(User user);
 
     boolean isAuthenticated();
 
-    boolean isAdmin();
-
     User currentUser();
+
+    User getUserByUsername(String email);
+
+    void UpdateFailCount(User user);
+
+    boolean checkOldPassword(User authenticatedUser, String oldPassword);
+
+    void UpdatePassword(User authenticatedUser, UserPasswordChange userPasswordChange);
+
+    void handleResetPassword(UserPasswordReset userPasswordReset);
+
+    void ResetLoginFail(User user);
+
+    User getUserByEmail(String email);
+
+    void GenTokenResetPassword(User user);
+
+    String GenToken(int Length);
+
+    User getUserByToken(String token);
 }

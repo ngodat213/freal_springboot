@@ -17,8 +17,5 @@ import lombok.*;
 @ToString
 @Entity
 public class FoodCategory extends AbstractEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
     private String title;
 }

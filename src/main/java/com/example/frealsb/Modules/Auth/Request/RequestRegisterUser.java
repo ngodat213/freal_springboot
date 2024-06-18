@@ -1,13 +1,12 @@
 package com.example.frealsb.Modules.Auth.Request;
 
 import com.example.frealsb.Const.Constants;
+import com.example.frealsb.Enums.UserRole;
 import com.example.frealsb.Modules.Role.Model.Role;
 import com.example.frealsb.Modules.User.Model.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-
-import java.util.Date;
 
 @Data
 @Getter
@@ -34,16 +33,15 @@ public class RequestRegisterUser {
     })
     private String password;
 
-    public User toUser(Role role){
+    public User toUser(){
         User user = new User();
         user.setPassword(password);
         user.setEmail(email);
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setAvatarPublicId(Constants.DEFAULT_AVATAR);
-        user.setCreatedAt(new Date());
         user.setEnabled(true);
-        user.setRole(role);
+        user.setRole(UserRole.USER);
         return user;
     }
 }

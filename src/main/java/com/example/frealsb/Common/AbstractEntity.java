@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @Data
 public abstract class AbstractEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    protected String id;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

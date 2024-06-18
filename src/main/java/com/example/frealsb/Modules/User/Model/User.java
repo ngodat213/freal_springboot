@@ -1,16 +1,19 @@
 package com.example.frealsb.Modules.User.Model;
 import com.example.frealsb.Common.AbstractEntity;
-import com.example.frealsb.Modules.Role.Model.Role;
+import com.example.frealsb.Enums.UserRole;
 import jakarta.persistence.*;
-import jakarta.persistence.GenerationType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,8 +21,7 @@ import java.util.Date;
 @AllArgsConstructor
 @ToString
 @Entity
-public class User extends AbstractEntity {
-
+public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -44,8 +46,6 @@ public class User extends AbstractEntity {
     @Column(nullable = true)
     private String phone;
 
-    @Column(nullable = true)
-    private boolean enabled;
 
     @Column(nullable = true)
     private String avatarPublicId;
@@ -57,15 +57,17 @@ public class User extends AbstractEntity {
     @Size(max = 1000)
     private String bio;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
+    @Enumerated(EnumType.STRING)
+    private UserRole role = UserRole.USER;
 
-//  Function
-    public boolean hasRole(String roleName) {
-        if (this.role == null) {
-            return false;
-        }
-        return this.role.getRole_name() == roleName;
-    }
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @Column(nullable = true)
+    private boolean enabled = true;
+
+    private int countFail;
+    private Date lockExpired;
+    private String tokenResetPassword;
+    private Date tokenResetPasswordExpired;
 }
