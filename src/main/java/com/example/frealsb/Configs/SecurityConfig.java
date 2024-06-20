@@ -1,5 +1,6 @@
 package com.example.frealsb.Configs;
 
+import com.example.frealsb.Enums.UserRole;
 import com.example.frealsb.Modules.Auth.Service.CustomUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -22,9 +23,9 @@ public class SecurityConfig {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(
                 request->request
-                        .requestMatchers("/").hasAuthority("USER")
-                        .requestMatchers("/users/**").hasAuthority("PARTNER,USER")
-                        .requestMatchers("/roles").hasAuthority("ADMIN,PARTNER,USER")
+                        .requestMatchers("/").hasAuthority(UserRole.USER.getAuthority())
+                        .requestMatchers("/users/**").hasAuthority(UserRole.PARTNER.getAuthority())
+                        .requestMatchers("/home").hasAuthority(UserRole.ADMIN.getAuthority())
                         .anyRequest().permitAll()
         ).formLogin(AbstractConfiguredSecurityBuilder
                 ->AbstractConfiguredSecurityBuilder.loginPage("/login")

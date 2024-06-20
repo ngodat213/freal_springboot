@@ -3,7 +3,6 @@ package com.example.frealsb.Modules.FoodCategory.Service;
 import com.example.frealsb.Modules.FoodCategory.FoodCategoryRepository;
 import com.example.frealsb.Modules.FoodCategory.Model.FoodCategory;
 import com.example.frealsb.Modules.FoodCategory.Request.RequestFoodCategory;
-import com.example.frealsb.Services.Interface.IFoodCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

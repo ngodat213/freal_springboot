@@ -1,7 +1,7 @@
 package com.example.frealsb.Modules.FoodFeature.Request;
 
-import com.example.frealsb.Entities.FoodFeatured;
-import com.example.frealsb.Entities.Location;
+import com.example.frealsb.Modules.FoodFeature.Model.FoodFeatured;
+import com.example.frealsb.Modules.Location.Model.Location;
 import lombok.*;
 
 import java.util.Date;
@@ -23,7 +23,6 @@ public class RequestFoodFeature {
         data.setTitle(title);
         data.setDescription(description);
         data.setLocation(location);
-        data.setCreatedAt(new Date());
         return data;
     }
 
@@ -33,7 +32,6 @@ public class RequestFoodFeature {
         data.setTitle(title);
         data.setDescription(description);
         data.setLocation(location);
-        data.setUpdatedAt(new Date());
         return data;
     }
 }

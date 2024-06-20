@@ -1,5 +1,6 @@
 package com.example.frealsb.Configs;
 
+import com.example.frealsb.Enums.UserRole;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,7 +14,7 @@ public class HandleSuccessLogin extends SavedRequestAwareAuthenticationSuccessHa
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
-        boolean isAdmin = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"));
+        boolean isAdmin = authentication.getAuthorities().contains(new SimpleGrantedAuthority(UserRole.ADMIN.getAuthority()));
         if (isAdmin) {
             setDefaultTargetUrl("/roles");
         }else{

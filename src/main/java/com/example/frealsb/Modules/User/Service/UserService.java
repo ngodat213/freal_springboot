@@ -5,8 +5,6 @@ import com.example.frealsb.Modules.Auth.Request.UserPasswordChange;
 import com.example.frealsb.Modules.Auth.Request.UserPasswordReset;
 import com.example.frealsb.Modules.User.Model.Otp;
 import com.example.frealsb.Modules.User.Model.User;
-import com.example.frealsb.Modules.Cloudinary.Service.CloudinaryService;
-import com.example.frealsb.Modules.Role.RoleRepository;
 import com.example.frealsb.Modules.User.Reponsitory.OtpRepository;
 import com.example.frealsb.Modules.User.Reponsitory.UserRepository;
 import com.example.frealsb.Modules.Auth.Request.RequestRegisterUser;

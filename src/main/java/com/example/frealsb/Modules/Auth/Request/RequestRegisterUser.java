@@ -2,7 +2,6 @@ package com.example.frealsb.Modules.Auth.Request;
 
 import com.example.frealsb.Const.Constants;
 import com.example.frealsb.Enums.UserRole;
-import com.example.frealsb.Modules.Role.Model.Role;
 import com.example.frealsb.Modules.User.Model.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
