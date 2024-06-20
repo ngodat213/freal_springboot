@@ -24,8 +24,7 @@ public class AuthController {
      */
     @GetMapping("/register")
     public String Register(Model model){
-        RequestRegisterUser registerUser = new RequestRegisterUser();
-        model.addAttribute("registerUser", registerUser);
+        model.addAttribute("registerUser", new RequestRegisterUser());
         return "Layouts/Auth/Register";
     }
 
@@ -104,7 +103,7 @@ public class AuthController {
         if(user != null){
             userService.GenTokenResetPassword(user);
         }
-        return "redirect:/forgotpassword";
+        return "redirect:/forgot_password";
     }
 
     /**

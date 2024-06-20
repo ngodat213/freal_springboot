@@ -1,6 +1,7 @@
 package com.example.frealsb.Modules.Auth.Request;
 
 import com.example.frealsb.Modules.User.Model.User;
+import com.example.frealsb.Util.Model.ImageStorage;
 import lombok.*;
 
 import java.util.Date;
@@ -17,14 +18,14 @@ public class RequestUpdateUser {
     private String firstName;
     private String lastName;
     private String bio;
-    private String avatarPublicId;
+    private ImageStorage avatar;
 
     public User toUpdate(User user){
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setPassword(password);
         user.setEmail(email);
-        user.setAvatarPublicId(avatarPublicId);
+        user.setAvatar(avatar);
         user.setPhone(phone);
         user.setBio(bio);
         return user;

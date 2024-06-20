@@ -1,9 +1,8 @@
-package com.example.frealsb.Modules.Culture.Model;
+package com.example.frealsb.Modules.Culture.RequestCulture;
 
+import com.example.frealsb.Modules.Culture.Model.Culture;
 import com.example.frealsb.Modules.Location.Model.Location;
 import lombok.*;
-
-import java.util.Date;
 
 @Getter
 @Setter

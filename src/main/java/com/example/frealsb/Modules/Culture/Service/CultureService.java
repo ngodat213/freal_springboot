@@ -2,13 +2,12 @@ package com.example.frealsb.Modules.Culture.Service;
 
 import com.example.frealsb.Modules.Culture.Model.Culture;
 import com.example.frealsb.Modules.Culture.CultureRepository;
-import com.example.frealsb.Modules.Culture.Model.RequestCulture;
+import com.example.frealsb.Modules.Culture.RequestCulture.RequestCulture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Service

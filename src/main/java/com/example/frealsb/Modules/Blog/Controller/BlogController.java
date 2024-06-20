@@ -1,6 +1,7 @@
 package com.example.frealsb.Modules.Blog.Controller;
 
 import com.example.frealsb.Modules.Blog.Service.BlogService;
+import com.example.frealsb.Util.Model.PaginationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,10 +16,12 @@ public class BlogController {
     @GetMapping("/blogs")
     public String allBlogs(@RequestParam(value = "search", required = false, defaultValue = "") String search,
                            @RequestParam(value = "page", required = false, defaultValue = "0") int page,
-                           @RequestParam(value = "size", required = false, defaultValue = "10") int size,
+                           @RequestParam(value = "limit", required = false, defaultValue = "10") int limit,
+                           @RequestParam(defaultValue = "desc", name = "sort") String sortDirection,
+                           @RequestParam(defaultValue = "createdAt") String sortBy,
                            Model model) {
-
-        model.addAttribute("blogs", blogService.getBlogs(search, page, size));
+        PaginationDTO paginationDTO = new PaginationDTO(page, limit, sortDirection, sortBy);
+        model.addAttribute("blogs", blogService.getBlogs(search, paginationDTO));
         return "Layouts/Blogs/index";
     }
 }
