@@ -38,7 +38,6 @@ public class RequestRegisterUser {
         user.setEmail(email);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setAvatarPublicId(Constants.DEFAULT_AVATAR);
         user.setEnabled(true);
         user.setRole(UserRole.USER);
         return user;

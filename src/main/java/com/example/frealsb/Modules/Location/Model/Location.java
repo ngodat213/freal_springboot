@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
@@ -19,6 +20,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @AllArgsConstructor
 @ToString
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Location extends AbstractEntity {
     private String city;
     private String province;

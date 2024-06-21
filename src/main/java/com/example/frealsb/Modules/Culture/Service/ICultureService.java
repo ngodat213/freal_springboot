@@ -1,7 +1,7 @@
 package com.example.frealsb.Modules.Culture.Service;
 
 import com.example.frealsb.Modules.Culture.Model.Culture;
-import com.example.frealsb.Modules.Culture.Model.RequestCulture;
+import com.example.frealsb.Modules.Culture.RequestCulture.RequestCulture;
 
 import java.util.List;
 

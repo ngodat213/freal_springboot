@@ -25,12 +25,22 @@ public class SecurityConfig {
                 request->request
                         .requestMatchers("/").hasAuthority(UserRole.USER.getAuthority())
                         .requestMatchers("/users/**").hasAuthority(UserRole.PARTNER.getAuthority())
-                        .requestMatchers("/home").hasAuthority(UserRole.ADMIN.getAuthority())
+                        .requestMatchers("/", "/dashboard/**").hasAuthority(UserRole.ADMIN.getAuthority())
                         .anyRequest().permitAll()
         ).formLogin(AbstractConfiguredSecurityBuilder
-                ->AbstractConfiguredSecurityBuilder.loginPage("/login")
+                ->AbstractConfiguredSecurityBuilder
+                .loginPage("/login")
+                .defaultSuccessUrl("/")
                 .successHandler(new HandleSuccessLogin())
                 .permitAll()
+        ).rememberMe(rememberMe -> rememberMe.key("freal")
+                .rememberMeCookieName("freal")
+                .tokenValiditySeconds(24 * 60 * 60)
+                .userDetailsService(customUserDetailService)
+
+        ).sessionManagement(sessionManagement -> sessionManagement
+                .maximumSessions(1)
+                .expiredUrl("/login")
         ).logout(logout->logout.logoutUrl("/logout")).build();
     }
 

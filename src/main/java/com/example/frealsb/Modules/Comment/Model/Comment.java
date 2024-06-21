@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Comment extends AbstractEntity {
     private String title;
     @ManyToOne(fetch = FetchType.EAGER)

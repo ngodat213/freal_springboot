@@ -3,9 +3,9 @@ package com.example.frealsb.Enums;
 import org.springframework.security.core.GrantedAuthority;
 
 public enum UserRole implements GrantedAuthority {
-    USER("ROLE_USER"),
+    USER("USER"),
     PARTNER("PARTNER"),
-    ADMIN("ROLE_ADMIN");
+    ADMIN("ADMIN");
 
     private String authority;
     UserRole(String authority) {

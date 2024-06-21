@@ -1,19 +1,16 @@
 package com.example.frealsb.Modules.User.Model;
-import com.example.frealsb.Common.AbstractEntity;
+import com.example.frealsb.Const.Constants;
 import com.example.frealsb.Enums.UserRole;
+import com.example.frealsb.Util.Model.ImageStorage;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
@@ -21,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -43,14 +41,12 @@ public class User{
     @Email()
     private String email;
 
-    @Column(nullable = true)
     private String phone;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "avatar_id", referencedColumnName = "id")
+    private ImageStorage avatar;
 
-    @Column(nullable = true)
-    private String avatarPublicId;
-
-    @Column(nullable = true)
     private String location;
 
     @Column(nullable = true, length = 1000)
@@ -70,4 +66,11 @@ public class User{
     private Date lockExpired;
     private String tokenResetPassword;
     private Date tokenResetPasswordExpired;
+
+    public String getAvatarUrl(){
+        if(avatar != null){
+            return avatar.getUrl();
+        }
+        return Constants.DEFAULT_AVATAR;
+    }
 }

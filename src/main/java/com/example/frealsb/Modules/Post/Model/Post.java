@@ -4,20 +4,15 @@ import com.example.frealsb.Common.AbstractEntity;
 import com.example.frealsb.Modules.Tag.Model.Tag;
 import com.example.frealsb.Modules.User.Model.User;
 import com.example.frealsb.Modules.Comment.Model.Comment;
-import com.example.frealsb.Modules.Event.Model.Event;
-import com.example.frealsb.Modules.Food.Model.Food;
 import com.example.frealsb.Modules.Location.Model.Location;
+import com.example.frealsb.Util.Model.ImageStorage;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.*;
-
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -26,6 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Post extends AbstractEntity {
     @Min(0)
     private int fav = 0;
@@ -33,8 +29,8 @@ public class Post extends AbstractEntity {
     @Column(nullable = true)
     private String title;
 
-    @Column(nullable = true)
-    private String image;
+    @OneToMany(mappedBy = "post")
+    private List<ImageStorage> images;
 
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "posts_tags",
