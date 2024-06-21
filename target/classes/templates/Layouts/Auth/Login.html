@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head th:replace="Fragments/head :: head(Login)">
+<head th:replace="~{Fragments/head :: head(Login)}">
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
@@ -9,7 +9,7 @@
     <p>Username hoac password sai</p>
 </div>
 <div class="container" id="container">
-    <div th:replace="/Fragments/login-slider.html :: login-slider">
+    <div th:replace="~{/Fragments/login-slider.html :: login-slider}">
     </div>
     <div class="form-container sign-in">
         <form th:action="@{/login}" method="post">

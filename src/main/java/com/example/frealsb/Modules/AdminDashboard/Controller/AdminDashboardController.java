@@ -12,4 +12,18 @@ public class AdminDashboardController {
     public String dashboard (){
         return "Layouts/Dashboard/index";
     }
+    @GetMapping("mail_box")
+    public String mailBox (){
+        return "Layouts/Dashboard/mail_box";
+    }
+
+    @GetMapping("chat")
+    public String chat (){
+        return "Layouts/Dashboard/chat";
+    }
+
+    @GetMapping("invoice")
+    public String invoice (){
+        return "Layouts/Dashboard/invoice";
+    }
 }

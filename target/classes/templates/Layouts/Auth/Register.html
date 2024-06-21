@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="Fragments/head :: head(Login)">
+<head th:replace="~{Fragments/head :: head(Register)}">
   <meta charset="UTF-8">
   <title>Register</title>
 </head>
 <body>
 <div class="container" id="container">
-  <div th:replace="/Fragments/login-slider.html :: login-slider"></div>
+  <div th:replace="~{/Fragments/login-slider.html :: login-slider}">
   <div class="form-container sign-up" id="register-form">
     <form th:action="@{/register_submit}" method="post" th:object="${registerUser}">
       <h1>Create Account</h1>
