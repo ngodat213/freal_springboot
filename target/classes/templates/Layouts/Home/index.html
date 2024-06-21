@@ -117,7 +117,7 @@
                         <div class="post-actions">
                             <ul>
                                 <li>
-                                    <a href="#"><i class="fa-regular fa-thumbs-up"></i>Liked post 1.7K</a>
+                                    <a href="#" ><i class="fa-regular fa-thumbs-up"></i>Liked post 1.7K</a>
                                 </li>
                                 <li>
                                     <a href="#"><i class="fa-regular fa-comment"></i>Comment 45</a>
@@ -130,7 +130,7 @@
                         <div class="post-actions__line"></div>
                         <div class="post-comment">
                             <div class="content-think__comment">
-                                <img src="../../static/images/avata/avata1.jpg" alt="profile" />
+                                <img th:src="${post.getUser().getAvatarUrl()}" alt="profile" />
                                 <input type="text" placeholder="What's on your mind?" />
                                 <ul>
                                     <li>
