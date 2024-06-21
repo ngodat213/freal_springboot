@@ -29,8 +29,6 @@ public class AdminDashboardController {
     public String dashboard (){
         return "Layouts/Dashboard/index";
     }
-<<<<<<< Updated upstream
-=======
     @GetMapping("mail_box")
     public String mailBox (){
         return "Layouts/Dashboard/mail_box";
@@ -96,6 +94,4 @@ public class AdminDashboardController {
     public String locationTable (){
         return "Layouts/Dashboard/invoice";
     }
-
->>>>>>> Stashed changes
 }

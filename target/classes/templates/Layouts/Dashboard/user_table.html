@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="zxx">
-<head th:replace="Fragments/dashboard_head :: head(Dashboard)">
+<head th:replace="~{Fragments/dashboard_head :: head(Dashboard)}">
   <meta charset="UTF-8">
   <title>Title</title>
 </head>
-  <body class="crm_body_bg">
-    <div th:replace="Fragments/dashboard_sidebar"></div>
-    <section class="main_content dashboard_part large_header_bg">
-      <div th:replace="Fragments/dashboard_header"></div>
+<body class="crm_body_bg">
+<div th:replace="~{Fragments/dashboard_sidebar}"></div>
+<section class="main_content dashboard_part large_header_bg">
+  <div th:replace="~{Fragments/dashboard_header}"></div>
       <div class="main_content_iner">
         <div class="container-fluid p-0">
           <div class="row justify-content-center">
