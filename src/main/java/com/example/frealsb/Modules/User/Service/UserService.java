@@ -8,6 +8,9 @@ import com.example.frealsb.Modules.User.Model.User;
 import com.example.frealsb.Modules.User.Reponsitory.OtpRepository;
 import com.example.frealsb.Modules.User.Reponsitory.UserRepository;
 import com.example.frealsb.Modules.Auth.Request.RequestRegisterUser;
+import com.example.frealsb.Util.Model.PaginationDTO;
+import com.example.frealsb.Util.PaginationService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,9 +34,17 @@ public class UserService implements IUserService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
+    private PaginationService paginationService;
+    @Autowired
     private OtpRepository otpRepository;
 
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Override
+    public List<User> getAll(PaginationDTO paginationDTO) {
+        Pageable pageable = paginationService.getPageable(paginationDTO);
+        return userRepository.findAll(pageable).toList();
+    }
 
     @Override
     public User findByEmail(String email) {

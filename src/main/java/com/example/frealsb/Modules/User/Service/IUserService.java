@@ -4,11 +4,13 @@ import com.example.frealsb.Modules.Auth.Request.UserPasswordChange;
 import com.example.frealsb.Modules.Auth.Request.UserPasswordReset;
 import com.example.frealsb.Modules.User.Model.User;
 import com.example.frealsb.Modules.Auth.Request.RequestRegisterUser;
-import jakarta.security.auth.message.AuthException;
+import com.example.frealsb.Util.Model.PaginationDTO;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 public interface IUserService extends UserDetailsService {
+    List<User> getAll(PaginationDTO paginationDTO);
 
     User findByEmail(String email);
 
