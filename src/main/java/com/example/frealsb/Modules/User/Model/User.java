@@ -1,4 +1,5 @@
 package com.example.frealsb.Modules.User.Model;
+import com.example.frealsb.Const.Constants;
 import com.example.frealsb.Enums.UserRole;
 import com.example.frealsb.Util.Model.ImageStorage;
 import jakarta.persistence.*;
@@ -65,4 +66,11 @@ public class User{
     private Date lockExpired;
     private String tokenResetPassword;
     private Date tokenResetPasswordExpired;
+
+    public String getAvatarUrl(){
+        if(avatar != null){
+            return avatar.getUrl();
+        }
+        return Constants.DEFAULT_AVATAR;
+    }
 }

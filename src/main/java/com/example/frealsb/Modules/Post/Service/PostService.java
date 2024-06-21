@@ -44,8 +44,9 @@ public class PostService implements IPostService {
     public Post addPost(User user, RequestPost req, MultipartFile[] images) {
         Post post = req.toAddData();
         post.setUser(user);
-        post.setImages(imageService.uploadImages(images));
-        return postRepository.saveAndFlush(post);
+        post = postRepository.saveAndFlush(post);
+        imageService.uploadPostImages(images, post);
+        return post;
     }
 
     @Override

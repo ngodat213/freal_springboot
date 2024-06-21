@@ -2,6 +2,7 @@ package com.example.frealsb.Util;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.example.frealsb.Modules.Post.Model.Post;
 import com.example.frealsb.Util.Model.ImageStorage;
 import com.example.frealsb.Util.Model.ImageStorageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class ImageService {
     @Autowired
     private ImageStorageRepository pImageRepository;
 
-    public List<ImageStorage> uploadImages(MultipartFile[] images){
+    public List<ImageStorage> uploadPostImages(MultipartFile[] images, Post post){
         List<ImageStorage> imagesList = new ArrayList<>();
         for(MultipartFile image: images){
             Map uploadResult = uploadImageToCloudinary(image);
@@ -33,7 +34,7 @@ public class ImageService {
                     new ImageStorage(
                             uploadResult.get("url").toString(),
                             uploadResult.get("asset_id").toString(),
-                            uploadResult.get("public_id").toString())
+                            uploadResult.get("public_id").toString(), post)
             );
             imagesList.add(pImage);
         }
