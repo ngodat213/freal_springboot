@@ -1,6 +1,7 @@
 package com.example.frealsb.Modules.AdminDashboard.Controller;
 
 import com.example.frealsb.Const.ErrorConstants;
+import com.example.frealsb.Const.ToastConstants;
 import com.example.frealsb.Modules.Blog.Service.IBlogService;
 import com.example.frealsb.Modules.Event.Service.IEventService;
 import com.example.frealsb.Modules.Location.Service.ILocationService;
@@ -11,6 +12,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -105,18 +107,37 @@ public class AdminDashboardController {
     }
 
 //  API
+    @PostMapping("/user_lock/{id}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> userLock(@PathVariable("id") String userId) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            boolean isAdmin = userService.handleLockUser(userId);
+            if (!isAdmin) {
+                response.put(ErrorConstants.status, ErrorConstants.statusError);
+                response.put(ErrorConstants.message, ToastConstants.cantLockUser);
+                return ResponseEntity.badRequest().body(response);
+            }
+            response.put(ErrorConstants.status,ErrorConstants.statusSuccess);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put(ErrorConstants.status, ErrorConstants.statusError);
+            response.put(ErrorConstants.message, e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
     @PostMapping("/create_user")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> createUser(@Valid @ModelAttribute User user) {
         Map<String, Object> response = new HashMap<>();
         if (userService.existsByEmail(user.getEmail())) {
-            response.put("status", "error");
-            response.put("message", "Email already exists.");
+            response.put(ErrorConstants.status, ErrorConstants.statusError);
+            response.put(ErrorConstants.message, ErrorConstants.emailExits);
             return ResponseEntity.badRequest().body(response);
         }
-
         userService.createUser(user);
-        response.put("status", "success");
+        response.put(ErrorConstants.status,ErrorConstants.statusSuccess);
         return ResponseEntity.ok(response);
     }
 }

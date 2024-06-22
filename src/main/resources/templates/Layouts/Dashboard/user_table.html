@@ -53,6 +53,7 @@
                                             <th scope="col">Role</th>
                                             <th scope="col">Avatar</th>
                                             <th scope="col">Status</th>
+                                            <th scope="col">Actions</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -63,8 +64,14 @@
                                             <td th:text="${user.role.getAuthority()}"></td>
                                             <td><img th:src="${user.getAvatarUrl()}" alt="avatar"
                                                      style="width: 30px; height: 30px;"></td>
-                                            <td><a href="#" class="status_btn"
-                                                   th:text="${user.isEnabled()} ? Active : Unlock"></a></td>
+                                            <td><a href="#" th:class=" ${user.isEnabled()} ? 'status_btn' : 'status_btn bg-danger'"
+                                                   th:text="${user.isEnabled()} ? Active : Unlock"></a>
+                                            </td>
+                                            <td>
+                                                <a href="#" th:data-userid="${user.id}" class="open-lock-modal">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </a>
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -214,7 +221,7 @@
         <i class="ti-angle-up"></i>
     </a>
 </div>
-
+<!--create user modal-->
 <div class="modal fade" id="createUserModal" tabindex="-1" aria-labelledby="createUserModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -262,6 +269,27 @@
                     <button type="submit" class="btn btn-primary">Save changes</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+<!--lock user modal-->
+<div class="modal fade" id="lockUserModal" tabindex="-1" aria-labelledby="lockUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="lockUserModalLabel">Lock User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="lockUserForm">
+                    <input type="hidden" id="lockUserId" name="userId" />
+                    <p>Are you sure you want to lock this user?</p>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="confirmLockUser">Lock User</button>
+            </div>
         </div>
     </div>
 </div>
@@ -324,7 +352,8 @@
 
 <script th:src="@{/js/dashboard_init.js}"></script>
 <script th:src="@{/js/custom.js}"></script>
-
+<script src="https://kit.fontawesome.com/99cbdec5b3.js" crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/99cbdec5b3.js" crossorigin="anonymous"></script>
 <script>
     $(document).ready(function () {
         $('#createUserForm').submit(function (event) {
@@ -369,5 +398,44 @@
         });
     });
 </script>
+<script>
+    $(document).ready(function() {
+        // Function to open the modal with the user ID
+        function openLockUserModal(userId) {
+            $('#lockUserId').val(userId);
+            $('#lockUserModal').modal('show');
+        }
+
+        // Handle click event to open the modal
+        $('.open-lock-modal').click(function(event) {
+            event.preventDefault(); // Prevent the default anchor behavior
+            var userId = $(this).data('userid');
+            openLockUserModal(userId);
+        });
+
+        // AJAX call to lock the user
+        $('#confirmLockUser').click(function() {
+            var formData = $('#lockUserForm').serialize();
+            $.ajax({
+                type: 'POST',
+                url: '/dashboard/user_lock/' + $('#lockUserId').val(), // URL should include the user ID
+                data: formData,
+                success: function(response) {
+                    if (response.status === 'success') {
+                        $('#lockUserModal').modal('hide');
+                        window.location.href = '/dashboard/user'; // Redirect to user dashboard or appropriate page
+                    } else {
+                        alert(response.message); // Display error message if locking failed
+                    }
+                },
+                error: function(response) {
+                    var errorMessage = response.responseJSON ? response.responseJSON.message : 'An error occurred';
+                    alert(errorMessage); // Display error message for AJAX request failure
+                }
+            });
+        });
+    });
+</script>
+
 </body>
 </html>

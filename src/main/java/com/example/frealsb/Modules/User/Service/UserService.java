@@ -1,6 +1,8 @@
 package com.example.frealsb.Modules.User.Service;
 
+import com.example.frealsb.Enums.UserRole;
 import com.example.frealsb.Excepciton.DuplicateResourceException;
+import com.example.frealsb.Excepciton.ResourceNotFoundException;
 import com.example.frealsb.Modules.Auth.Request.UserPasswordChange;
 import com.example.frealsb.Modules.Auth.Request.UserPasswordReset;
 import com.example.frealsb.Modules.User.Model.Otp;
@@ -138,6 +140,19 @@ public class UserService implements IUserService {
         user.setPassword(passwordEncoder.encode(userPasswordReset.newPassword()));
         userRepository.save(user);
         otpRepository.delete(otp);
+    }
+
+    @Override
+    public boolean handleLockUser(String id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("The user with id [%s] not exists"
+                        .formatted(id)));
+        if(user.getRole().getAuthority().equals(UserRole.ADMIN.getAuthority())){
+            return false;
+        }
+        user.setEnabled(!user.isEnabled());
+        userRepository.saveAndFlush(user);
+        return true;
     }
 
     @Override

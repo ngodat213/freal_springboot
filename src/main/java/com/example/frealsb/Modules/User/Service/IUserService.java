@@ -36,6 +36,8 @@ public interface IUserService extends UserDetailsService {
 
     void handleResetPassword(UserPasswordReset userPasswordReset);
 
+    boolean handleLockUser(String id);
+
     void ResetLoginFail(User user);
 
     User getUserByEmail(String email);
