@@ -52,6 +52,16 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public boolean existsByPhone(String phone) {
+        return userRepository.existsByPhone(phone);
+    }
+
+    @Override
     public User register(RequestRegisterUser req) {
         if(!userRepository.existsByEmail(req.getEmail())){
             if(checkPassword(req.getPassword(), req.getConfirmPassword())) {
@@ -65,6 +75,12 @@ public class UserService implements IUserService {
         }else{
             throw new DuplicateResourceException("The user with email [%s] already exists".formatted(req.getEmail()));
         }
+    }
+
+    @Override
+    public User createUser(User user) {
+        user.setPassword(encodePassword(user.getPassword()));
+        return userRepository.saveAndFlush(user);
     }
 
     @Override

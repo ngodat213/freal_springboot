@@ -14,7 +14,13 @@ public interface IUserService extends UserDetailsService {
 
     User findByEmail(String email);
 
+    boolean existsByEmail(String email);
+
+    boolean existsByPhone(String phone);
+
     User register(RequestRegisterUser req);
+
+    User createUser(User user);
 
     boolean isAuthenticated();
 
