@@ -8,4 +8,5 @@ public class ErrorConstants {
     public static final String statusError = "error";
     // Msg
     public static final String emailExits = "Email already exists.";
+    public static final String locationExits = "Location already exists.";
 }

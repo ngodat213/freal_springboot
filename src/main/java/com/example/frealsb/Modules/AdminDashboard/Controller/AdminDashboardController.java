@@ -4,19 +4,17 @@ import com.example.frealsb.Const.ErrorConstants;
 import com.example.frealsb.Const.ToastConstants;
 import com.example.frealsb.Modules.Blog.Service.IBlogService;
 import com.example.frealsb.Modules.Event.Service.IEventService;
+import com.example.frealsb.Modules.Location.Model.Location;
 import com.example.frealsb.Modules.Location.Service.ILocationService;
 import com.example.frealsb.Modules.User.Model.User;
 import com.example.frealsb.Modules.User.Service.IUserService;
 import com.example.frealsb.Util.Model.PaginationDTO;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -102,11 +100,32 @@ public class AdminDashboardController {
     }
 
     @GetMapping("/location")
-    public String locationTable (){
-        return "Layouts/Dashboard/invoice";
+    public String locationTable (@RequestParam(defaultValue = "1") int page,
+                                 @RequestParam(defaultValue = "10") int limit,
+                                 @RequestParam(defaultValue = "desc", name = "sort") String sortDirection,
+                                 @RequestParam(defaultValue = "createdAt") String sortBy,
+                                 Model model){
+        model.addAttribute("location", new Location());
+        PaginationDTO paginationDTO = new PaginationDTO(page, limit, sortDirection, sortBy);
+        model.addAttribute("locations", locationService.getAll(paginationDTO));
+        return "Layouts/Dashboard/location_table";
     }
 
 //  API
+    @PostMapping("/create_location")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> createLocation(@Valid @ModelAttribute Location location) {
+        Map<String, Object> response = new HashMap<>();
+        if (locationService.existsByCityAndProvinceAndFeatures(location)) {
+            response.put(ErrorConstants.status, ErrorConstants.statusError);
+            response.put(ErrorConstants.message, ErrorConstants.locationExits);
+            return ResponseEntity.badRequest().body(response);
+        }
+        locationService.saveLocation(location);
+        response.put(ErrorConstants.status,ErrorConstants.statusSuccess);
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/user_lock/{id}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> userLock(@PathVariable("id") String userId) {

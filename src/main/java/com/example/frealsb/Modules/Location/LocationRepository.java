@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface LocationRepository extends JpaRepository<Location, String> {
     List<Location> findAllBy(String s, Pageable pageable);
+    boolean existsByCityAndProvinceAndFeatures(String city, String province, String features);
 }

@@ -22,8 +22,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class Location extends AbstractEntity {
+    @Column(nullable = false)
     private String city;
+    @Column(nullable = false)
     private String province;
+    @Column(nullable = false)
     private String features;
 
     // -- relationship --
