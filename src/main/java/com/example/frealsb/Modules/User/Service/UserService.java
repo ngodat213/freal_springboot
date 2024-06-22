@@ -1,6 +1,8 @@
 package com.example.frealsb.Modules.User.Service;
 
+import com.example.frealsb.Enums.UserRole;
 import com.example.frealsb.Excepciton.DuplicateResourceException;
+import com.example.frealsb.Excepciton.ResourceNotFoundException;
 import com.example.frealsb.Modules.Auth.Request.UserPasswordChange;
 import com.example.frealsb.Modules.Auth.Request.UserPasswordReset;
 import com.example.frealsb.Modules.User.Model.Otp;
@@ -8,6 +10,9 @@ import com.example.frealsb.Modules.User.Model.User;
 import com.example.frealsb.Modules.User.Reponsitory.OtpRepository;
 import com.example.frealsb.Modules.User.Reponsitory.UserRepository;
 import com.example.frealsb.Modules.Auth.Request.RequestRegisterUser;
+import com.example.frealsb.Util.Model.PaginationDTO;
+import com.example.frealsb.Util.PaginationService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,13 +36,31 @@ public class UserService implements IUserService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
+    private PaginationService paginationService;
+    @Autowired
     private OtpRepository otpRepository;
 
     private BCryptPasswordEncoder passwordEncoder;
 
     @Override
+    public List<User> getAll(PaginationDTO paginationDTO) {
+        Pageable pageable = paginationService.getPageable(paginationDTO);
+        return userRepository.findAll(pageable).toList();
+    }
+
+    @Override
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public boolean existsByPhone(String phone) {
+        return userRepository.existsByPhone(phone);
     }
 
     @Override
@@ -53,6 +77,12 @@ public class UserService implements IUserService {
         }else{
             throw new DuplicateResourceException("The user with email [%s] already exists".formatted(req.getEmail()));
         }
+    }
+
+    @Override
+    public User createUser(User user) {
+        user.setPassword(encodePassword(user.getPassword()));
+        return userRepository.saveAndFlush(user);
     }
 
     @Override
@@ -110,6 +140,19 @@ public class UserService implements IUserService {
         user.setPassword(passwordEncoder.encode(userPasswordReset.newPassword()));
         userRepository.save(user);
         otpRepository.delete(otp);
+    }
+
+    @Override
+    public boolean handleLockUser(String id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("The user with id [%s] not exists"
+                        .formatted(id)));
+        if(user.getRole().getAuthority().equals(UserRole.ADMIN.getAuthority())){
+            return false;
+        }
+        user.setEnabled(!user.isEnabled());
+        userRepository.saveAndFlush(user);
+        return true;
     }
 
     @Override
