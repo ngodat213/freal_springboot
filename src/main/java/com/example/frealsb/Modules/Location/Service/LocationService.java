@@ -37,7 +37,7 @@ public class LocationService implements ILocationService {
     @Override
     public Location deleteLocation(String id) {
         Location location = getLocationById(id);
-        location.setDeleted(true);
+        location.setDeleted(!location.isDeleted());
         return locationRepository.save(location);
     }
 

@@ -3,6 +3,8 @@ package com.example.frealsb.Modules.Food.Service;
 import com.example.frealsb.Modules.Food.FoodRepository;
 import com.example.frealsb.Modules.Food.Model.Food;
 import com.example.frealsb.Modules.Food.Request.RequestFood;
+import com.example.frealsb.Util.Model.PaginationDTO;
+import com.example.frealsb.Util.PaginationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,11 +17,13 @@ import java.util.List;
 public class FoodService implements IFoodService {
     @Autowired
     private FoodRepository foodRepository;
+    @Autowired
+    private PaginationService paginationService;
 
     @Override
-    public List<Food> getAllFoods(String s, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return foodRepository.findAllBy(s, pageable);
+    public List<Food> getAll(PaginationDTO paginationDTO) {
+        Pageable pageable = paginationService.getPageable(paginationDTO);
+        return foodRepository.findAll(pageable).toList();
     }
 
     @Override
@@ -28,13 +32,13 @@ public class FoodService implements IFoodService {
     }
 
     @Override
-    public Food addFood(RequestFood req) {
-        return foodRepository.save(req.toAddData());
+    public Food addFood(Food food) {
+        return foodRepository.save(food);
     }
 
     @Override
-    public Food updateFood(RequestFood req) {
-        return foodRepository.save(req.toUpdateData());
+    public Food updateFood(Food food) {
+        return foodRepository.save(food);
     }
 
     @Override

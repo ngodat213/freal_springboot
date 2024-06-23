@@ -3,6 +3,8 @@ package com.example.frealsb.Modules.FoodCategory.Service;
 import com.example.frealsb.Modules.FoodCategory.FoodCategoryRepository;
 import com.example.frealsb.Modules.FoodCategory.Model.FoodCategory;
 import com.example.frealsb.Modules.FoodCategory.Request.RequestFoodCategory;
+import com.example.frealsb.Util.Model.PaginationDTO;
+import com.example.frealsb.Util.PaginationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,11 +16,13 @@ import java.util.List;
 public class FoodCategoryService implements IFoodCategoryService {
     @Autowired
     private FoodCategoryRepository foodCategoryRepository;
+    @Autowired
+    private PaginationService paginationService;
 
     @Override
-    public List<FoodCategory> getAllFoodCategory(String s, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return foodCategoryRepository.findAllBy(s, pageable);
+    public List<FoodCategory> getAll(PaginationDTO paginationDTO) {
+        Pageable pageable = paginationService.getPageable(paginationDTO);
+        return foodCategoryRepository.findAll(pageable).toList();
     }
 
     @Override
@@ -27,13 +31,13 @@ public class FoodCategoryService implements IFoodCategoryService {
     }
 
     @Override
-    public FoodCategory addFoodCategory(RequestFoodCategory req) {
-        return foodCategoryRepository.save(req.toAddData());
+    public FoodCategory addFoodCategory(FoodCategory foodCategory) {
+        return foodCategoryRepository.save(foodCategory);
     }
 
     @Override
-    public FoodCategory updateFoodCategory(RequestFoodCategory req) {
-        return foodCategoryRepository.save(req.toUpdateData());
+    public FoodCategory updateFoodCategory(FoodCategory foodCategory) {
+        return foodCategoryRepository.save(foodCategory);
     }
 
     @Override

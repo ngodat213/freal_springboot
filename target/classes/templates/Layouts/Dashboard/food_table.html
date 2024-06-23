@@ -47,22 +47,31 @@
                                     <table class="table lms_table_active ">
                                         <thead>
                                         <tr>
-                                            <th scope="col">City</th>
-                                            <th scope="col">Features</th>
-                                            <th scope="col">Province</th>
-                                            <th scope="col">Is deleted</th>
+                                            <th scope="col">Title</th>
+                                            <th scope="col">Description</th>
+                                            <th scope="col">Contact number</th>
+                                            <th scope="col">Price</th>
+                                            <th scope="col">Opening hours</th>
+                                            <th scope="col">Close hours</th>
+                                            <th scope="col">Map address</th>
+                                            <th scope="col">Category</th>
                                             <th scope="col">Status</th>
                                             <th scope="col">Actions</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr th:each="location : ${locations}">
-                                            <td th:text="${location.city}"></td>
-                                            <td th:text="${location.features}"></td>
-                                            <td th:text="${location.province}"></td>
-                                            <td th:text="${location.isDeleted()}"></td>
-                                            <td><a href="#" th:class=" ${!location.isDeleted()} ? 'status_btn' : 'status_btn bg-danger'"
-                                                   th:text="${!location.isDeleted()} ? Active : Unlock"></a>
+                                        <tr th:each="food : ${foods}">
+                                            <td th:text="${food.title}"></td>
+                                            <td th:text="${food.description}"></td>
+                                            <td th:text="${food.contactNumber}"></td>
+                                            <td th:text="${food.price}"></td>
+                                            <td th:text="${food.openingHours}"></td>
+                                            <td th:text="${food.closeHours}"></td>
+                                            <td th:text="${food.mapAddress}"></td>
+                                            <td th:text="${food.getFoodCategory().title}"></td>
+                                            <td th:text="${food.isDeleted()}"></td>
+                                            <td><a href="#" th:class=" ${!food.isDeleted()} ? 'status_btn' : 'status_btn bg-danger'"
+                                                   th:text="${!food.isDeleted()} ? Active : Unlock"></a>
                                             </td>
                                             <td>
                                                 <a href="#" class="edit-location" th:data-locationid="${location.id}">

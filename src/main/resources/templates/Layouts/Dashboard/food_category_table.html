@@ -47,28 +47,24 @@
                                     <table class="table lms_table_active ">
                                         <thead>
                                         <tr>
-                                            <th scope="col">City</th>
-                                            <th scope="col">Features</th>
-                                            <th scope="col">Province</th>
-                                            <th scope="col">Is deleted</th>
+                                            <th scope="col">Title</th>
+                                            <th scope="col">Is Deleted</th>
                                             <th scope="col">Status</th>
                                             <th scope="col">Actions</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr th:each="location : ${locations}">
-                                            <td th:text="${location.city}"></td>
-                                            <td th:text="${location.features}"></td>
-                                            <td th:text="${location.province}"></td>
-                                            <td th:text="${location.isDeleted()}"></td>
-                                            <td><a href="#" th:class=" ${!location.isDeleted()} ? 'status_btn' : 'status_btn bg-danger'"
-                                                   th:text="${!location.isDeleted()} ? Active : Unlock"></a>
+                                        <tr th:each="food : ${food_categories}">
+                                            <td th:text="${food.title}"></td>
+                                            <td th:text="${food.isDeleted()}"></td>
+                                            <td><a href="#" th:class=" ${!food.isDeleted()} ? 'status_btn' : 'status_btn bg-danger'"
+                                                   th:text="${!food.isDeleted()} ? Active : Unlock"></a>
                                             </td>
                                             <td>
-                                                <a href="#" class="edit-location" th:data-locationid="${location.id}">
+                                                <a href="#" class="edit-food-category" th:data-categoryid="${food.id}">
                                                     <i class="fa-solid fa-pen-to-square"></i>
-                                                </a>  |
-                                                <a href="#" th:data-locationid="${location.id}" class="open-delete-modal">
+                                                </a> |
+                                                <a href="#" th:data-categoryid="${food.id}" class="open-delete-food-category-modal">
                                                     <i class="fa-solid fa-trash-can"></i>
                                                 </a>
                                             </td>
@@ -221,63 +217,47 @@
         <i class="ti-angle-up"></i>
     </a>
 </div>
-<!-- Edit Location Modal -->
-<div class="modal fade" id="editLocationModal" tabindex="-1" aria-labelledby="editLocationModalLabel" aria-hidden="true">
+<!-- Edit Food Category Modal -->
+<div class="modal fade" id="editFoodCategoryModal" tabindex="-1" aria-labelledby="editFoodCategoryModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editLocationModalLabel">Edit Location</h5>
+                <h5 class="modal-title" id="editFoodCategoryModalLabel">Edit Food Category</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="editLocationForm">
-                    <input type="hidden" id="editLocationId" name="id">
+                <form id="editFoodCategoryForm">
+                    <input type="hidden" id="editCategoryId" name="id">
                     <div class="mb-3">
-                        <label for="editCity" class="form-label">City</label>
-                        <input type="text" class="form-control" id="editCity" name="city">
-                    </div>
-                    <div class="mb-3">
-                        <label for="editProvince" class="form-label">Province</label>
-                        <input type="text" class="form-control" id="editProvince" name="province">
-                    </div>
-                    <div class="mb-3">
-                        <label for="editFeatures" class="form-label">Features</label>
-                        <textarea class="form-control" id="editFeatures" name="features"></textarea>
+                        <label for="editTitle" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="editTitle" name="title">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="saveEditLocationChanges">Save changes</button>
+                <button type="button" class="btn btn-primary" id="saveEditFoodCategoryChanges">Save changes</button>
             </div>
         </div>
     </div>
 </div>
-<!--create user modal-->
-<div class="modal fade" id="createLocationModal" tabindex="-1" aria-labelledby="createLocationModalLabel" aria-hidden="true">
+
+<!-- Create Food Category Modal -->
+<div class="modal fade" id="createFoodCategoryModal" tabindex="-1" aria-labelledby="createFoodCategoryModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="createLocationModalLabel">Create Location</h5>
+                <h5 class="modal-title" id="createFoodCategoryModalLabel">Create Food Category</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="createLocationForm" th:object="${location}">
+            <form id="createFoodCategoryForm">
                 <div class="modal-body">
                     <div id="formErrors" class="mb-3 alert alert-danger" role="alert" style="display: none;">
                         <ul id="errorList"></ul>
                     </div>
-
                     <div class="mb-3">
-                        <label for="city" class="form-label">City</label>
-                        <input type="text" class="form-control" id="city" th:field="*{city}" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="features" class="form-label">Features</label>
-                        <input type="text" class="form-control" id="features" th:field="*{features}" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="province" class="form-label">Province</label>
-                        <input type="text" class="form-control" id="province" th:field="*{province}" required>
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="title" name="title" required>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -288,21 +268,21 @@
         </div>
     </div>
 </div>
-<!-- Delete Location Modal -->
-<div class="modal fade" id="deleteLocationModal" tabindex="-1" aria-labelledby="deleteLocationModalLabel" aria-hidden="true">
+<!-- Delete Food Category Modal -->
+<div class="modal fade" id="deleteFoodCategoryModal" tabindex="-1" aria-labelledby="deleteFoodCategoryModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteLocationModalLabel">Delete Location</h5>
+                <h5 class="modal-title" id="deleteFoodCategoryModalLabel">Delete Food Category</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Are you sure you want to delete this location?
-                <input type="hidden" id="deleteLocationId">
+                Are you sure you want to delete this food category?
+                <input type="hidden" id="deleteFoodCategoryId">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteLocation">Delete</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteFoodCategory">Delete</button>
             </div>
         </div>
     </div>
@@ -368,23 +348,20 @@
 <script th:src="@{/js/custom.js}"></script>
 <script src="https://kit.fontawesome.com/99cbdec5b3.js" crossorigin="anonymous"></script>
 <script src="https://kit.fontawesome.com/99cbdec5b3.js" crossorigin="anonymous"></script>
-<!--edit script-->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Handle edit button click
-        document.querySelectorAll('.edit-location').forEach(function(button) {
+        document.querySelectorAll('.edit-food-category').forEach(function(button) {
             button.addEventListener('click', function() {
-                const locationId = this.getAttribute('data-locationid');
-                fetch(`/dashboard/edit_location/${locationId}`)
+                const categoryId = this.getAttribute('data-categoryid');
+                fetch(`/dashboard/edit_category/${categoryId}`)
                     .then(response => response.json())
                     .then(data => {
                         if (data.status === 'success') {
-                            const location = data.location;
-                            document.getElementById('editLocationId').value = location.id;
-                            document.getElementById('editCity').value = location.city;
-                            document.getElementById('editProvince').value = location.province;
-                            document.getElementById('editFeatures').value = location.features;
-                            $('#editLocationModal').modal('show');
+                            const foodCategory = data.foodCategory;
+                            document.getElementById('editCategoryId').value = foodCategory.id;
+                            document.getElementById('editTitle').value = foodCategory.title;
+                            $('#editFoodCategoryModal').modal('show');
                         } else {
                             alert('Error: ' + data.message);
                         }
@@ -393,17 +370,17 @@
         });
 
         // Handle save changes button click in edit modal
-        document.getElementById('saveEditLocationChanges').addEventListener('click', function() {
-            const locationId = document.getElementById('editLocationId').value;
-            const formData = new FormData(document.getElementById('editLocationForm'));
+        document.getElementById('saveEditFoodCategoryChanges').addEventListener('click', function() {
+            const categoryId = document.getElementById('editCategoryId').value;
+            const formData = new FormData(document.getElementById('editFoodCategoryForm'));
 
-            fetch(`/dashboard/edit_location/${locationId}`, {
+            fetch(`/dashboard/edit_category/${categoryId}`, {
                 method: 'PUT',
                 body: formData
             }).then(response => response.json())
                 .then(data => {
                     if (data.status === 'success') {
-                        $('#editLocationModal').modal('hide');
+                        $('#editFoodCategoryModal').modal('hide');
                         window.location.reload(); // Reload the page to reflect changes
                     } else {
                         alert('Error: ' + data.message);
@@ -415,76 +392,58 @@
         });
     });
 </script>
+
 <!--create script-->
 <script>
     $(document).ready(function () {
-        $('#createLocationForm').submit(function (event) {
+        $('#createFoodCategoryForm').submit(function (event) {
             event.preventDefault(); // Prevent the form from submitting via the browser
             var formData = $(this).serialize();
             $.ajax({
                 type: 'POST',
-                url: '/dashboard/create_location',
+                url: '/dashboard/create_category',
                 data: formData,
                 success: function (response) {
-                    console.log("success");
                     if (response.status === 'success') {
-                        $('#createLocationModal').modal('hide');
-                        window.location.href = '/dashboard/location';
+                        $('#createFoodCategoryModal').modal('hide');
+                        window.location.href = '/dashboard/food_category'; // Redirect to food category table page
                     } else {
-                        $('#formErrors').show();
-                        var errorList = $('#errorList');
-                        errorList.empty();
-                        if (response.errors) {
-                            response.errors.forEach(function (error) {
-                                errorList.append('<li>' + error.defaultMessage + '</li>');
-                            });
-                        } else if (response.message) {
-                            errorList.append('<li>' + response.message + '</li>');
-                        }
+                        alert('Error: ' + response.message);
                     }
                 },
                 error: function (response) {
-                    console.log(response.responseJSON.message)
-                    $('#formErrors').show();
-                    var errorList = $('#errorList');
-                    errorList.empty();
-                    if (response.responseJSON.errors) {
-                        response.responseJSON.errors.forEach(function (error) {
-                            errorList.append('<li>' + error.defaultMessage + '</li>');
-                        });
-                    } else if (response.responseJSON.message) {
-                        errorList.append('<li>' + response.responseJSON.message + '</li>');
-                    }
+                    alert('Error: ' + response.responseJSON.message);
                 }
             });
         });
     });
 </script>
+
 <!--delete script-->
 <script>
     $(document).ready(function() {
-        // Function to open the delete modal with the location ID
-        function openDeleteLocationModal(locationId) {
-            $('#deleteLocationId').val(locationId);
-            $('#deleteLocationModal').modal('show');
+        // Function to open the delete modal with the category ID
+        function openDeleteFoodCategoryModal(categoryId) {
+            $('#deleteFoodCategoryId').val(categoryId);
+            $('#deleteFoodCategoryModal').modal('show');
         }
 
         // Handle click event to open the delete modal
-        $('.open-delete-modal').click(function(event) {
+        $('.open-delete-food-category-modal').click(function(event) {
             event.preventDefault(); // Prevent the default anchor behavior
-            var locationId = $(this).data('locationid');
-            openDeleteLocationModal(locationId);
+            var categoryId = $(this).data('categoryid');
+            openDeleteFoodCategoryModal(categoryId);
         });
 
-        // AJAX call to delete the location
-        $('#confirmDeleteLocation').click(function() {
-            var locationId = $('#deleteLocationId').val();
+        // AJAX call to delete the food category
+        $('#confirmDeleteFoodCategory').click(function() {
+            var categoryId = $('#deleteFoodCategoryId').val();
             $.ajax({
                 type: 'DELETE',
-                url: '/dashboard/delete_location/' + locationId, // URL should include the location ID
+                url: `/dashboard/delete_category/${categoryId}`,
                 success: function(response) {
                     if (response.status === 'success') {
-                        $('#deleteLocationModal').modal('hide');
+                        $('#deleteFoodCategoryModal').modal('hide');
                         window.location.reload(); // Reload the page to reflect changes
                     } else {
                         alert(response.message); // Display error message if deletion failed
@@ -498,6 +457,5 @@
         });
     });
 </script>
-
 </body>
 </html>
