@@ -32,5 +32,7 @@ public class Food extends AbstractEntity {
     private double price;
     private double rating;
     private String openingHours;
+    private String closeHours;
     private String contactNumber;
+    private String mapAddress;
 }

@@ -4,6 +4,10 @@ import com.example.frealsb.Const.ErrorConstants;
 import com.example.frealsb.Const.ToastConstants;
 import com.example.frealsb.Modules.Blog.Service.IBlogService;
 import com.example.frealsb.Modules.Event.Service.IEventService;
+import com.example.frealsb.Modules.Food.Model.Food;
+import com.example.frealsb.Modules.Food.Service.IFoodService;
+import com.example.frealsb.Modules.FoodCategory.Model.FoodCategory;
+import com.example.frealsb.Modules.FoodCategory.Service.IFoodCategoryService;
 import com.example.frealsb.Modules.Location.Model.Location;
 import com.example.frealsb.Modules.Location.Service.ILocationService;
 import com.example.frealsb.Modules.User.Model.User;
@@ -20,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/dashboard")
@@ -30,6 +33,10 @@ public class AdminDashboardController {
     private IUserService userService;
     @Autowired
     private ILocationService locationService;
+    @Autowired
+    private IFoodService foodService;
+    @Autowired
+    private IFoodCategoryService foodCategoryService;
     @Autowired
     private IBlogService blogService;
     @Autowired
@@ -87,13 +94,27 @@ public class AdminDashboardController {
     }
 
     @GetMapping("/food")
-    public String foodTable (){
-        return "Layouts/Dashboard/invoice";
+    public String foodTable (@RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = "10") int limit,
+                             @RequestParam(defaultValue = "desc", name = "sort") String sortDirection,
+                             @RequestParam(defaultValue = "createdAt") String sortBy,
+                             Model model){
+        model.addAttribute("food", new Food());
+        PaginationDTO paginationDTO = new PaginationDTO(page, limit, sortDirection, sortBy);
+        model.addAttribute("foods", foodService.getAll(paginationDTO));
+        return "Layouts/Dashboard/food_table";
     }
 
     @GetMapping("/food_category")
-    public String foodCategoryTable (){
-        return "Layouts/Dashboard/invoice";
+    public String foodCategoryTable (@RequestParam(defaultValue = "1") int page,
+                                     @RequestParam(defaultValue = "10") int limit,
+                                     @RequestParam(defaultValue = "desc", name = "sort") String sortDirection,
+                                     @RequestParam(defaultValue = "createdAt") String sortBy,
+                                     Model model){
+        model.addAttribute("food_category", new FoodCategory());
+        PaginationDTO paginationDTO = new PaginationDTO(page, limit, sortDirection, sortBy);
+        model.addAttribute("food_categories", foodCategoryService.getAll(paginationDTO));
+        return "Layouts/Dashboard/food_category_table";
     }
 
     @GetMapping("/food_feature")
@@ -113,8 +134,146 @@ public class AdminDashboardController {
         return "Layouts/Dashboard/location_table";
     }
 
+    /**
+     * ======= START OF REGION =======
+     * ========== API CRUD ===========
+     */
+    @GetMapping("/edit_category/{id}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> getFoodCategory(@PathVariable String id) {
+        FoodCategory existingCategory = foodCategoryService.getFoodCategory(id);
+        if (existingCategory != null) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("status", "success");
+            response.put("foodCategory", existingCategory);
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(404).body(Map.of("status", "error", "message", "Food category not found"));
+        }
+    }
 
-//  API
+    // Edit FoodCategory
+    @PutMapping("/edit_category/{id}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> editFoodCategory(@PathVariable String id, @Validated @RequestBody FoodCategory foodCategory) {
+        FoodCategory existingCategory = foodCategoryService.getFoodCategory(id);
+        if (existingCategory != null) {
+            existingCategory.setTitle(foodCategory.getTitle());
+            foodCategoryService.updateFoodCategory(existingCategory);
+            return ResponseEntity.ok(Map.of("status", "success", "message", "Food category updated successfully"));
+        } else {
+            return ResponseEntity.status(404).body(Map.of("status", "error", "message", "Food category not found"));
+        }
+    }
+
+    // Delete FoodCategory
+    @DeleteMapping("/delete_category/{id}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> deleteFoodCategory(@PathVariable String id) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            FoodCategory isDeleted = foodCategoryService.deleteFoodCategory(id);
+            if (isDeleted != null) {
+                response.put("status", "success");
+                response.put("message", "Food category deleted successfully");
+                return ResponseEntity.ok(response);
+            } else {
+                response.put("status", "error");
+                response.put("message", "Food category not found");
+                return ResponseEntity.status(404).body(response);
+            }
+        } catch (Exception e) {
+            response.put("status", "error");
+            response.put("message", e.getMessage());
+            return ResponseEntity.status(500).body(response);
+        }
+    }
+
+    // Create FoodCategory
+    @PostMapping("/create_category")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> createFoodCategory(@Validated @RequestBody FoodCategory foodCategory) {
+        Map<String, Object> response = new HashMap<>();
+        foodCategoryService.addFoodCategory(foodCategory);
+        response.put("status", "success");
+        response.put("message", "Food category created successfully");
+        return ResponseEntity.ok(response);
+    }
+
+    // Get Food by ID
+    @GetMapping("/edit_food/{id}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> getFood(@PathVariable String id) {
+        Food existingFood = foodService.getFood(id);
+        if (existingFood != null) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("status", "success");
+            response.put("food", existingFood);
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(404).body(Map.of("status", "error", "message", "Food not found"));
+        }
+    }
+
+    // Edit Food
+    @PutMapping("/edit_food/{id}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> editFood(@PathVariable String id, @Validated @ModelAttribute Food food) {
+        Food existingFood = foodService.getFood(id);
+        if (existingFood != null) {
+            existingFood.setTitle(food.getTitle());
+            existingFood.setDescription(food.getDescription());
+            existingFood.setLocation(food.getLocation());
+            existingFood.setFoodFeatured(food.getFoodFeatured());
+            existingFood.setFoodCategory(food.getFoodCategory());
+            existingFood.setPrice(food.getPrice());
+            existingFood.setRating(food.getRating());
+            existingFood.setOpeningHours(food.getOpeningHours());
+            existingFood.setCloseHours(food.getCloseHours());
+            existingFood.setContactNumber(food.getContactNumber());
+            existingFood.setMapAddress(food.getMapAddress());
+            foodService.updateFood(existingFood);
+            return ResponseEntity.ok(Map.of("status", "success", "message", "Food updated successfully"));
+        } else {
+            return ResponseEntity.status(404).body(Map.of("status", "error", "message", "Food not found"));
+        }
+    }
+
+    // Delete Food
+    @DeleteMapping("/delete_food/{id}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> deleteFood(@PathVariable String id) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Food isDeleted = foodService.deleteFood(id);
+            if (isDeleted != null) {
+                response.put("status", "success");
+                response.put("message", "Food deleted successfully");
+                return ResponseEntity.ok(response);
+            } else {
+                response.put("status", "error");
+                response.put("message", "Food not found");
+                return ResponseEntity.status(404).body(response);
+            }
+        } catch (Exception e) {
+            response.put("status", "error");
+            response.put("message", e.getMessage());
+            return ResponseEntity.status(500).body(response);
+        }
+    }
+
+    // Create Food
+    @PostMapping("/create_food")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> createFood(@Validated @ModelAttribute Food food) {
+        Map<String, Object> response = new HashMap<>();
+        foodService.addFood(food);
+        response.put("status", "success");
+        response.put("message", "Food created successfully");
+        return ResponseEntity.ok(response);
+    }
+
+    // Location
     @GetMapping("/edit_location/{id}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> getLocation(@PathVariable String id) {
@@ -179,6 +338,7 @@ public class AdminDashboardController {
         return ResponseEntity.ok(response);
     }
 
+    // User
     @PostMapping("/user_lock/{id}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> userLock(@PathVariable("id") String userId) {
@@ -212,4 +372,7 @@ public class AdminDashboardController {
         response.put(ErrorConstants.status,ErrorConstants.statusSuccess);
         return ResponseEntity.ok(response);
     }
+    /**
+     * ======= END OF REGION =======
+     */
 }
