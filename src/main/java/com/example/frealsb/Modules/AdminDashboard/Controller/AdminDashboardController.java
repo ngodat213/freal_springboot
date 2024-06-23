@@ -15,10 +15,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/dashboard")
@@ -111,7 +113,58 @@ public class AdminDashboardController {
         return "Layouts/Dashboard/location_table";
     }
 
+
 //  API
+    @GetMapping("/edit_location/{id}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> getLocation(@PathVariable String id) {
+        Location existingLocation = locationService.getLocationById(id);
+        if (existingLocation != null) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("status", "success");
+            response.put("location", existingLocation); // Include location details in the response
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(404).body(Map.of("status", "error", "message", "Location not found"));
+        }
+    }
+    @PutMapping("/edit_location/{id}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> editLocation(@PathVariable String id, @Validated @ModelAttribute Location location) {
+        Location existingLocation = locationService.getLocationById(id);
+        if (existingLocation != null) {
+            existingLocation.setCity(location.getCity());
+            existingLocation.setProvince(location.getProvince());
+            existingLocation.setFeatures(location.getFeatures());
+            locationService.saveLocation(existingLocation);
+            return ResponseEntity.ok(Map.of("status", "success", "message", "Location updated successfully"));
+        } else {
+            return ResponseEntity.status(404).body(Map.of("status", "error", "message", "Location not found"));
+        }
+    }
+
+    @DeleteMapping("/delete_location/{id}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> deleteLocation(@PathVariable String id) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Location isDeleted = locationService.deleteLocation(id);
+            if (isDeleted != null) {
+                response.put("status", "success");
+                response.put("message", "Location deleted successfully");
+                return ResponseEntity.ok(response);
+            } else {
+                response.put("status", "error");
+                response.put("message", "Location not found");
+                return ResponseEntity.status(404).body(response);
+            }
+        } catch (Exception e) {
+            response.put("status", "error");
+            response.put("message", e.getMessage());
+            return ResponseEntity.status(500).body(response);
+        }
+    }
+
     @PostMapping("/create_location")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> createLocation(@Valid @ModelAttribute Location location) {
